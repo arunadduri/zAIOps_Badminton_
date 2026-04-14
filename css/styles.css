@@ -15,6 +15,7 @@ body {
                 url('https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=1920&q=80') center/cover no-repeat fixed;
     color: var(--text-light);
     overflow-x: hidden;
+    overflow-y: auto;
     padding-top: 70px;
 }
 
@@ -209,10 +210,11 @@ body {
     display: flex;
 }
 
-.landing-left { 
-    flex: 1; 
-    position: relative; 
-    overflow: hidden; 
+.landing-left {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
 }
 
 .slideshow { 
