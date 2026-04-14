@@ -10,7 +10,7 @@ async function loadAllRegistrations() {
         const { data: registrations, error } = await supabaseClient
             .from('registrations')
             .select('*')
-            .order('timestamp', { ascending: false });
+            .order('created_at', { ascending: false });
         
         if (error) throw error;
         
@@ -66,9 +66,9 @@ async function loadAllRegistrations() {
                                 <td>${reg.name}</td>
                                 <td>${reg.email}</td>
                                 ${hasPartner ? `<td>${reg.partner_name || '-'}</td><td>${reg.partner_email || '-'}</td>` : ''}
-                                <td>${new Date(reg.timestamp).toLocaleDateString('en-IN', { 
-                                    year: 'numeric', 
-                                    month: 'short', 
+                                <td>${new Date(reg.created_at).toLocaleDateString('en-IN', {
+                                    year: 'numeric',
+                                    month: 'short',
                                     day: 'numeric',
                                     hour: '2-digit',
                                     minute: '2-digit'

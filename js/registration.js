@@ -256,11 +256,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     email: email.toLowerCase(),
                     gender: gender,
                     category: category,
-                    partner_name: checkbox.dataset.hasPartner === 'true' 
-                        ? document.getElementById(`${category}PartnerName`).value.trim() 
+                    partner_name: checkbox.dataset.hasPartner === 'true'
+                        ? document.getElementById(`${category}PartnerName`).value.trim()
                         : null,
-                    partner_email: partnerEmail,
-                    timestamp: new Date().toISOString()
+                    partner_email: partnerEmail
                 };
                 
                 const { error: insertError } = await supabaseClient
