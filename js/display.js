@@ -93,54 +93,48 @@ async function loadAllRegistrations() {
     }
 }
 
-// Gallery image configuration - Add all your image filenames here
-const earlierTournamentImages = [
-    'IMG_4687.jpg',
-    'IMG_4101.jpg',
-    'IMG_4105.jpg',
-    'IMG_4106.jpg',
-    'IMG_4107.jpg',
-    'IMG_4108.jpg',
-    'IMG_4109.jpg',
-    'IMG_4110.jpg',
-    'IMG_4111.jpg',
-    'IMG_4112.jpg',
-    'IMG_4113.jpg',
-    'IMG_4114.jpg',
-    'IMG_4115.jpg',
-    'IMG_4116.jpg',
-    'IMG_4117.jpg',
-    'IMG_4118.jpg',
-    'IMG_4119.jpg',
-    'IMG_4120.jpg'
-    // Add more image filenames here as you upload them to imgaes folder
-];
-
-// Load gallery images dynamically
-function loadGalleryImages() {
+// Load gallery images dynamically from GitHub
+async function loadGalleryImages() {
     const galleryGrid = document.querySelector('#earlierGallery .gallery-grid');
     
     if (!galleryGrid) return;
     
-    // Clear existing content
-    galleryGrid.innerHTML = '';
+    // Show loading
+    galleryGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-gray);">Loading images...</div>';
     
-    // Add each image without caption
-    earlierTournamentImages.forEach((imageName, index) => {
-        const galleryItem = document.createElement('div');
-        galleryItem.className = 'gallery-item';
+    try {
+        // Fetch from GitHub API
+        const response = await fetch('https://api.github.com/repos/arunadduri/zAIOps_Badminton_/contents/images');
+        const files = await response.json();
         
-        galleryItem.innerHTML = `
-            <img src="imgaes/${imageName}" alt="Tournament Photo ${index + 1}" loading="lazy" onerror="this.parentElement.style.display='none'">
-        `;
+        // Filter image files
+        const imageFiles = files.filter(file =>
+            file.type === 'file' &&
+            /\.(jpg|jpeg|png|gif|webp)$/i.test(file.name) &&
+            file.name !== '.gitkeep'
+        );
         
-        galleryGrid.appendChild(galleryItem);
-    });
+        galleryGrid.innerHTML = '';
+        
+        if (imageFiles.length === 0) {
+            galleryGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-gray);">No images found</div>';
+            return;
+        }
+        
+        // Add images
+        imageFiles.forEach((file, index) => {
+            const galleryItem = document.createElement('div');
+            galleryItem.className = 'gallery-item';
+            galleryItem.innerHTML = `<img src="imgaes/${file.name}" alt="Tournament Photo ${index + 1}" loading="lazy" onerror="this.parentElement.style.display='none'">`;
+            galleryGrid.appendChild(galleryItem);
+        });
+    } catch (error) {
+        console.error('Error loading images:', error);
+        galleryGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: #ff4444;">Failed to load images</div>';
+    }
 }
 
-// Load gallery when page loads
-document.addEventListener('DOMContentLoaded', function() {
-    loadGalleryImages();
-});
+// Load when page loads
+document.addEventListener('DOMContentLoaded', loadGalleryImages);
 
 // Made with Bob
