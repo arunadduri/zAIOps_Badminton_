@@ -93,4 +93,40 @@ async function loadAllRegistrations() {
     }
 }
 
+// Gallery image configuration
+const earlierTournamentImages = [
+    'IMG_4687.jpg',
+    'IMG_4101.jpg',
+    'IMG_4105.jpg'
+    // Add more image filenames here as you upload them
+];
+
+// Load gallery images dynamically
+function loadGalleryImages() {
+    const galleryGrid = document.querySelector('#earlierGallery .gallery-grid');
+    
+    if (!galleryGrid) return;
+    
+    // Clear existing content
+    galleryGrid.innerHTML = '';
+    
+    // Add each image
+    earlierTournamentImages.forEach((imageName, index) => {
+        const galleryItem = document.createElement('div');
+        galleryItem.className = 'gallery-item';
+        
+        galleryItem.innerHTML = `
+            <img src="imgaes/${imageName}" alt="zAIOps Badminton Tournament ${index + 1}" loading="lazy" onerror="this.parentElement.style.display='none'">
+            <div class="gallery-caption">zAIOps Badminton Tournament</div>
+        `;
+        
+        galleryGrid.appendChild(galleryItem);
+    });
+}
+
+// Load gallery when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    loadGalleryImages();
+});
+
 // Made with Bob
