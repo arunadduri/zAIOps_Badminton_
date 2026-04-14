@@ -18,7 +18,6 @@ const categories = {
 };
 
 // Global Variables
-let currentSlide = 0;
 let errorTimeout;
 
 // Made with Bob
