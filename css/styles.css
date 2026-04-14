@@ -16,7 +16,7 @@ body {
     color: var(--text-light);
     overflow-x: hidden;
     overflow-y: auto;
-    padding-top: 70px;
+    padding-top: 0;
 }
 
 /* Top Navigation Bar */
@@ -208,6 +208,7 @@ body {
 .landing-page {
     min-height: 100vh;
     display: flex;
+    margin-top: 70px;
 }
 
 .landing-left {
