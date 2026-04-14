@@ -93,7 +93,15 @@ async function loadAllRegistrations() {
     }
 }
 
-// Load gallery images dynamically from GitHub
+// Fallback image list for local viewing
+const fallbackImages = [
+    'IMG_4687.jpg',
+    'IMG_4101.jpg',
+    'IMG_4105.jpg',
+    '81c7b00f-a8b0-4782-af30-a54fdfe053e2.jpg'
+];
+
+// Load gallery images dynamically from GitHub or fallback
 async function loadGalleryImages() {
     const galleryGrid = document.querySelector('#earlierGallery .gallery-grid');
     
@@ -102,37 +110,74 @@ async function loadGalleryImages() {
     // Show loading
     galleryGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-gray);">Loading images...</div>';
     
+    let imageFiles = [];
+    
     try {
-        // Fetch from GitHub API
+        // Try to fetch from GitHub API
         const response = await fetch('https://api.github.com/repos/arunadduri/zAIOps_Badminton_/contents/Photos');
         const files = await response.json();
         
         // Filter image files
-        const imageFiles = files.filter(file =>
+        imageFiles = files.filter(file =>
             file.type === 'file' &&
             /\.(jpg|jpeg|png|gif|webp)$/i.test(file.name) &&
             file.name !== '.gitkeep'
-        );
-        
-        galleryGrid.innerHTML = '';
-        
-        if (imageFiles.length === 0) {
-            galleryGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-gray);">No images found</div>';
-            return;
-        }
-        
-        // Add images
-        imageFiles.forEach((file, index) => {
-            const galleryItem = document.createElement('div');
-            galleryItem.className = 'gallery-item';
-            galleryItem.innerHTML = `<img src="Photos/${file.name}" alt="Tournament Photo ${index + 1}" loading="lazy" onerror="this.parentElement.style.display='none'">`;
-            galleryGrid.appendChild(galleryItem);
-        });
+        ).map(file => file.name);
     } catch (error) {
-        console.error('Error loading images:', error);
-        galleryGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: #ff4444;">Failed to load images</div>';
+        console.log('Using fallback images for local viewing');
+        imageFiles = fallbackImages;
+    }
+    
+    galleryGrid.innerHTML = '';
+    
+    if (imageFiles.length === 0) {
+        galleryGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-gray);">No images found</div>';
+        return;
+    }
+    
+    // Add images with click to expand
+    imageFiles.forEach((fileName, index) => {
+        const galleryItem = document.createElement('div');
+        galleryItem.className = 'gallery-item';
+        galleryItem.innerHTML = `<img src="Photos/${fileName}" alt="Tournament Photo ${index + 1}" loading="lazy" onclick="expandImage(this.src)" onerror="this.parentElement.style.display='none'">`;
+        galleryGrid.appendChild(galleryItem);
+    });
+}
+
+// Image lightbox/expand functionality
+function expandImage(src) {
+    // Create lightbox overlay
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox';
+    lightbox.innerHTML = `
+        <div class="lightbox-content">
+            <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+            <img src="${src}" alt="Expanded Image">
+        </div>
+    `;
+    document.body.appendChild(lightbox);
+    
+    // Close on click outside image
+    lightbox.addEventListener('click', function(e) {
+        if (e.target === lightbox) {
+            closeLightbox();
+        }
+    });
+}
+
+function closeLightbox() {
+    const lightbox = document.querySelector('.lightbox');
+    if (lightbox) {
+        lightbox.remove();
     }
 }
+
+// Close lightbox with Escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeLightbox();
+    }
+});
 
 // Load when page loads
 document.addEventListener('DOMContentLoaded', loadGalleryImages);
