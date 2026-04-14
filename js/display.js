@@ -93,12 +93,27 @@ async function loadAllRegistrations() {
     }
 }
 
-// Gallery image configuration
+// Gallery image configuration - Add all your image filenames here
 const earlierTournamentImages = [
     'IMG_4687.jpg',
     'IMG_4101.jpg',
-    'IMG_4105.jpg'
-    // Add more image filenames here as you upload them
+    'IMG_4105.jpg',
+    'IMG_4106.jpg',
+    'IMG_4107.jpg',
+    'IMG_4108.jpg',
+    'IMG_4109.jpg',
+    'IMG_4110.jpg',
+    'IMG_4111.jpg',
+    'IMG_4112.jpg',
+    'IMG_4113.jpg',
+    'IMG_4114.jpg',
+    'IMG_4115.jpg',
+    'IMG_4116.jpg',
+    'IMG_4117.jpg',
+    'IMG_4118.jpg',
+    'IMG_4119.jpg',
+    'IMG_4120.jpg'
+    // Add more image filenames here as you upload them to imgaes folder
 ];
 
 // Load gallery images dynamically
@@ -110,14 +125,13 @@ function loadGalleryImages() {
     // Clear existing content
     galleryGrid.innerHTML = '';
     
-    // Add each image
+    // Add each image without caption
     earlierTournamentImages.forEach((imageName, index) => {
         const galleryItem = document.createElement('div');
         galleryItem.className = 'gallery-item';
         
         galleryItem.innerHTML = `
-            <img src="imgaes/${imageName}" alt="zAIOps Badminton Tournament ${index + 1}" loading="lazy" onerror="this.parentElement.style.display='none'">
-            <div class="gallery-caption">zAIOps Badminton Tournament</div>
+            <img src="imgaes/${imageName}" alt="Tournament Photo ${index + 1}" loading="lazy" onerror="this.parentElement.style.display='none'">
         `;
         
         galleryGrid.appendChild(galleryItem);
