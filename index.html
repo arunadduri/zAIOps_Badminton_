@@ -8,7 +8,14 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
 </head>
 <body>
-    <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+    <!-- Top Navigation Bar -->
+    <div class="top-nav">
+        <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+        <div class="top-search">
+            <input type="text" id="topSearchInput" placeholder="Search..." onkeyup="handleSearch(this.value)">
+            <div class="search-results" id="topSearchResults"></div>
+        </div>
+    </div>
     
     <div class="sidebar" id="sidebar">
         <div class="sidebar-logo">
@@ -20,38 +27,31 @@
             <li><a href="#" onclick="showSection('gallery')">📸 Gallery</a></li>
             <li><a href="#" onclick="showSection('registrations')">👥 Registrations</a></li>
         </ul>
-        <div class="search-container">
-            <div class="search-box">
-                <input type="text" id="searchInput" placeholder="Search..." oninput="handleSearch(this.value)">
-                <div class="search-results" id="searchResults"></div>
-            </div>
-        </div>
     </div>
 
     <section class="landing-page section active" id="landingSection">
         <div class="landing-left">
             <div class="slideshow" id="slideshow">
-                <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=1920&q=80');">
+                <div class="slide active" style="background-image: url('imgaes/IMG_4687.jpg');">
                     <div class="slide-overlay"></div>
                 </div>
-                <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1612872087720-bb876e2e67d1?w=1920&q=80');">
+                <div class="slide" style="background-image: url('imgaes/IMG_4101.jpg');">
                     <div class="slide-overlay"></div>
                 </div>
-                <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1593786481097-b5f9e6e48e6e?w=1920&q=80');">
+                <div class="slide" style="background-image: url('imgaes/IMG_4105.jpg');">
                     <div class="slide-overlay"></div>
                 </div>
             </div>
         </div>
         <div class="landing-right">
             <div class="logo-container">
-                <img src="https://raw.githubusercontent.com/twitter/twemoji/master/assets/svg/1f3f8.svg" alt="Badminton" class="badminton-icon">
+                <img src="imgaes/Gemini_Generated_Image_of9qi2of9qi2of9q.png" alt="zAIOps Logo" class="badminton-icon">
                 <div class="logo-text">
                     <span class="logo-zaiops">zAIOps</span>
                     <span class="logo-badminton">BADMINTON</span>
                 </div>
             </div>
             <h1 class="landing-title">Badminton Tournament 2026</h1>
-            <p class="landing-subtitle">Join the Ultimate Competition</p>
             <button class="register-now-btn" onclick="showRegistrationForm()">Register Now</button>
         </div>
     </section>
