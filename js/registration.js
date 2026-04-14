@@ -151,8 +151,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedCategories = Array.from(document.querySelectorAll('input[name="category"]:checked'));
         
         // Validation
-        if (!email.toLowerCase().endsWith('@ibm.com')) {
-            showError('Email must be an IBM email address (@ibm.com)', 'email');
+        const emailLower = email.toLowerCase();
+        if (!emailLower.endsWith('@ibm.com') && !emailLower.endsWith('@in.ibm.com')) {
+            showError('Email must be an IBM email address (@ibm.com or @in.ibm.com)', 'email');
             return;
         }
         
@@ -176,8 +177,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     showError(`Please provide partner email for ${checkbox.dataset.label}.`, `${category}PartnerEmail`);
                     return;
                 }
-                if (!partnerEmail.toLowerCase().endsWith('@ibm.com')) {
-                    showError('Partner email must be an IBM email address (@ibm.com)', `${category}PartnerEmail`);
+                const partnerEmailLower = partnerEmail.toLowerCase();
+                if (!partnerEmailLower.endsWith('@ibm.com') && !partnerEmailLower.endsWith('@in.ibm.com')) {
+                    showError('Partner email must be an IBM email address (@ibm.com or @in.ibm.com)', `${category}PartnerEmail`);
                     return;
                 }
                 if (partnerEmail.toLowerCase() === email.toLowerCase()) {
