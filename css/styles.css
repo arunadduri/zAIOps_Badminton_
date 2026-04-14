@@ -206,9 +206,10 @@ body {
 
 /* Landing Page */
 .landing-page {
-    min-height: 100vh;
+    min-height: calc(100vh - 70px);
     display: flex;
     margin-top: 70px;
+    padding: 0;
 }
 
 .landing-left {
@@ -326,10 +327,10 @@ body {
 }
 
 /* Section Styles */
-.section { 
-    display: none; 
-    min-height: 100vh; 
-    padding: 80px 20px; 
+.section {
+    display: none;
+    min-height: 100vh;
+    padding: 20px 20px 80px 20px;
 }
 
 .section.active { display: block; }
