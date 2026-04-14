@@ -256,6 +256,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     email: email.toLowerCase(),
                     gender: gender,
                     category: category,
+                    category_label: categoryLabel,
                     partner_name: checkbox.dataset.hasPartner === 'true'
                         ? document.getElementById(`${category}PartnerName`).value.trim()
                         : null,

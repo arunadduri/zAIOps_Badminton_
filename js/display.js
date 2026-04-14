@@ -14,78 +14,12 @@ async function loadAllRegistrations() {
         
         if (error) throw error;
         
-        const categoryMap = {
-            'mensSingles': "Men's Singles",
-            'mensDoubles': "Men's Doubles",
-            'womensSingles': "Women's Singles",
-            'womensDoubles': "Women's Doubles",
-            'mixedDoubles': "Mixed Doubles"
-        };
+        // Store data globally for tab filtering
+        allRegistrationsData = registrations || [];
+        currentRegistrationTab = 'all';
         
-        // Group registrations by category
-        const groupedByCategory = {};
-        registrations.forEach(reg => {
-            if (!groupedByCategory[reg.category]) {
-                groupedByCategory[reg.category] = [];
-            }
-            groupedByCategory[reg.category].push(reg);
-        });
-        
-        container.innerHTML = '';
-        
-        // Create tables for each category
-        Object.keys(categoryMap).forEach(categoryKey => {
-            if (groupedByCategory[categoryKey] && groupedByCategory[categoryKey].length > 0) {
-                const section = document.createElement('div');
-                section.className = 'category-section';
-                
-                const header = document.createElement('div');
-                header.className = 'category-header';
-                header.innerHTML = `<h3>${categoryMap[categoryKey]} (${groupedByCategory[categoryKey].length})</h3>`;
-                section.appendChild(header);
-                
-                const table = document.createElement('table');
-                table.className = 'registrations-table';
-                
-                const hasPartner = categoryKey.includes('Doubles');
-                
-                table.innerHTML = `
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            ${hasPartner ? '<th>Partner Name</th><th>Partner Email</th>' : ''}
-                            <th>Registered On</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${groupedByCategory[categoryKey].map((reg, index) => `
-                            <tr>
-                                <td>${index + 1}</td>
-                                <td>${reg.name}</td>
-                                <td>${reg.email}</td>
-                                ${hasPartner ? `<td>${reg.partner_name || '-'}</td><td>${reg.partner_email || '-'}</td>` : ''}
-                                <td>${new Date(reg.created_at).toLocaleDateString('en-IN', {
-                                    year: 'numeric',
-                                    month: 'short',
-                                    day: 'numeric',
-                                    hour: '2-digit',
-                                    minute: '2-digit'
-                                })}</td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                `;
-                
-                section.appendChild(table);
-                container.appendChild(section);
-            }
-        });
-        
-        if (Object.keys(groupedByCategory).length === 0) {
-            container.innerHTML = '<p style="text-align: center; color: var(--text-gray); padding: 40px;">No registrations yet. Be the first to register!</p>';
-        }
+        // Display with current filter
+        displayFilteredRegistrations();
         
     } catch (error) {
         console.error('Error loading registrations:', error);
@@ -218,4 +152,111 @@ document.addEventListener('keydown', function(e) {
 // Load when page loads
 document.addEventListener('DOMContentLoaded', loadGalleryImages);
 
+
+// Registration tab switching
+let currentRegistrationTab = 'all';
+let allRegistrationsData = [];
+
+function switchRegistrationTab(tab) {
+    currentRegistrationTab = tab;
+    
+    // Update tab buttons
+    document.querySelectorAll('.registration-tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+    
+    // Filter and display registrations
+    displayFilteredRegistrations();
+}
+
+function displayFilteredRegistrations() {
+    const container = document.getElementById('registrationsContainer');
+    
+    if (allRegistrationsData.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: var(--text-gray); padding: 40px;">No registrations yet. Be the first to register!</p>';
+        return;
+    }
+    
+    const categoryMap = {
+        'mensSingles': "Men's Singles",
+        'mensDoubles': "Men's Doubles",
+        'womensSingles': "Women's Singles",
+        'womensDoubles': "Women's Doubles",
+        'mixedDoubles': "Mixed Doubles"
+    };
+    
+    // Filter registrations based on selected tab
+    let filteredData = allRegistrationsData;
+    if (currentRegistrationTab !== 'all') {
+        filteredData = allRegistrationsData.filter(reg => reg.category === currentRegistrationTab);
+    }
+    
+    // Group by category
+    const groupedByCategory = {};
+    filteredData.forEach(reg => {
+        if (!groupedByCategory[reg.category]) {
+            groupedByCategory[reg.category] = [];
+        }
+        groupedByCategory[reg.category].push(reg);
+    });
+    
+    container.innerHTML = '';
+    
+    // Create tables for each category
+    const categoriesToShow = currentRegistrationTab === 'all' 
+        ? Object.keys(categoryMap) 
+        : [currentRegistrationTab];
+    
+    categoriesToShow.forEach(categoryKey => {
+        if (groupedByCategory[categoryKey] && groupedByCategory[categoryKey].length > 0) {
+            const section = document.createElement('div');
+            section.className = 'category-section';
+            
+            const header = document.createElement('div');
+            header.className = 'category-header';
+            header.innerHTML = `<h3>${categoryMap[categoryKey]} (${groupedByCategory[categoryKey].length})</h3>`;
+            section.appendChild(header);
+            
+            const table = document.createElement('table');
+            table.className = 'registrations-table';
+            
+            const hasPartner = categoryKey.includes('Doubles');
+            
+            table.innerHTML = `
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        ${hasPartner ? '<th>Partner Name</th><th>Partner Email</th>' : ''}
+                        <th>Registered On</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${groupedByCategory[categoryKey].map((reg, index) => `
+                        <tr>
+                            <td>${index + 1}</td>
+                            <td>${reg.name}</td>
+                            <td>${reg.email}</td>
+                            ${hasPartner ? `<td>${reg.partner_name || '-'}</td><td>${reg.partner_email || '-'}</td>` : ''}
+                            <td>${new Date(reg.created_at).toLocaleDateString('en-IN', { 
+                                year: 'numeric', 
+                                month: 'short', 
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            })}</td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            `;
+            
+            section.appendChild(table);
+            container.appendChild(section);
+        }
+    });
+    
+    if (Object.keys(groupedByCategory).length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: var(--text-gray); padding: 40px;">No registrations found for this category.</p>';
+    }
+}
 // Made with Bob

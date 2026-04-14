@@ -34,10 +34,10 @@
             <div class="hero-slide active" style="background-image: url('Photos/81c7b00f-a8b0-4782-af30-a54fdfe053e2.jpg');">
                 <div class="hero-overlay"></div>
                 <div class="hero-content">
-                    <div class="logo-container">
-                        <img src="Logo/Image1.png" alt="zAIOps Logo" class="hero-logo">
+                    <div class="hero-title-with-logo">
+                        <img src="Logo/Image1.png" alt="zAIOps Logo" class="hero-logo-inline">
+                        <h1 class="hero-title">zAIOps Badminton Tournament 2026</h1>
                     </div>
-                    <h1 class="hero-title">zAIOps Badminton Tournament 2026</h1>
                     <p class="hero-subtitle">Join us for an exciting badminton tournament</p>
                     <button class="hero-register-btn" onclick="showRegistrationForm()">Register Now</button>
                 </div>
@@ -372,6 +372,14 @@
     <section class="section" id="registrationsSection">
         <div class="content-container">
             <h1 class="section-title">All Registrations</h1>
+            <div class="registration-tabs">
+                <button class="registration-tab active" onclick="switchRegistrationTab('all')">All Categories</button>
+                <button class="registration-tab" onclick="switchRegistrationTab('mensSingles')">Men's Singles</button>
+                <button class="registration-tab" onclick="switchRegistrationTab('mensDoubles')">Men's Doubles</button>
+                <button class="registration-tab" onclick="switchRegistrationTab('womensSingles')">Women's Singles</button>
+                <button class="registration-tab" onclick="switchRegistrationTab('womensDoubles')">Women's Doubles</button>
+                <button class="registration-tab" onclick="switchRegistrationTab('mixedDoubles')">Mixed Doubles</button>
+            </div>
             <div class="registrations-container" id="registrationsContainer">
                 <div class="loading-spinner" id="registrationsLoading" style="display: block;">
                     <div class="spinner"></div>
