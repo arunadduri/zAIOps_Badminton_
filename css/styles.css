@@ -362,19 +362,24 @@ body {
 
 .hero-title {
     font-size: 64px;
-    font-weight: 700;
-    background: linear-gradient(90deg, var(--primary-cyan), var(--primary-orange));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    font-weight: 900;
+    color: white;
     margin-bottom: 20px;
-    text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+    text-shadow:
+        3px 3px 6px rgba(0, 0, 0, 0.9),
+        0 0 20px rgba(0, 212, 255, 0.8),
+        0 0 40px rgba(0, 212, 255, 0.5);
+    letter-spacing: 2px;
 }
 
 .hero-subtitle {
-    font-size: 24px;
+    font-size: 28px;
+    font-weight: 600;
     color: var(--text-light);
     margin-bottom: 40px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    text-shadow:
+        2px 2px 8px rgba(0, 0, 0, 1),
+        0 0 15px rgba(0, 0, 0, 0.8);
 }
 
 .hero-register-btn {
