@@ -1,6 +1,10 @@
 // Slideshow functionality
+let currentSlide = 0;
+
 function startSlideshow() {
     const slides = document.querySelectorAll('.slide');
+    if (slides.length === 0) return;
+    
     setInterval(() => {
         slides[currentSlide].classList.remove('active');
         currentSlide = (currentSlide + 1) % slides.length;
