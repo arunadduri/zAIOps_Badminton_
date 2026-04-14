@@ -145,14 +145,26 @@ async function loadGalleryImages() {
 }
 
 // Image lightbox/expand functionality
+let currentLightboxIndex = 0;
+let lightboxImages = [];
+
 function expandImage(src) {
+    // Get all gallery images
+    const galleryImgs = document.querySelectorAll('#earlierGallery .gallery-item img');
+    lightboxImages = Array.from(galleryImgs).map(img => img.src);
+    currentLightboxIndex = lightboxImages.indexOf(src);
+    
     // Create lightbox overlay
     const lightbox = document.createElement('div');
     lightbox.className = 'lightbox';
+    lightbox.id = 'imageLightbox';
     lightbox.innerHTML = `
         <div class="lightbox-content">
             <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
-            <img src="${src}" alt="Expanded Image">
+            <button class="lightbox-arrow lightbox-arrow-left" onclick="navigateLightbox(-1)">❮</button>
+            <img src="${src}" alt="Expanded Image" id="lightboxImage">
+            <button class="lightbox-arrow lightbox-arrow-right" onclick="navigateLightbox(1)">❯</button>
+            <div class="lightbox-counter">${currentLightboxIndex + 1} / ${lightboxImages.length}</div>
         </div>
     `;
     document.body.appendChild(lightbox);
@@ -165,6 +177,23 @@ function expandImage(src) {
     });
 }
 
+function navigateLightbox(direction) {
+    currentLightboxIndex = (currentLightboxIndex + direction + lightboxImages.length) % lightboxImages.length;
+    const lightboxImg = document.getElementById('lightboxImage');
+    const counter = document.querySelector('.lightbox-counter');
+    
+    if (lightboxImg) {
+        lightboxImg.style.opacity = '0';
+        setTimeout(() => {
+            lightboxImg.src = lightboxImages[currentLightboxIndex];
+            lightboxImg.style.opacity = '1';
+            if (counter) {
+                counter.textContent = `${currentLightboxIndex + 1} / ${lightboxImages.length}`;
+            }
+        }, 200);
+    }
+}
+
 function closeLightbox() {
     const lightbox = document.querySelector('.lightbox');
     if (lightbox) {
@@ -172,10 +201,17 @@ function closeLightbox() {
     }
 }
 
-// Close lightbox with Escape key
+// Close lightbox with Escape key and navigate with arrow keys
 document.addEventListener('keydown', function(e) {
+    const lightbox = document.getElementById('imageLightbox');
+    if (!lightbox) return;
+    
     if (e.key === 'Escape') {
         closeLightbox();
+    } else if (e.key === 'ArrowLeft') {
+        navigateLightbox(-1);
+    } else if (e.key === 'ArrowRight') {
+        navigateLightbox(1);
     }
 });
 

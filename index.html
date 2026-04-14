@@ -30,29 +30,51 @@
     </div>
 
     <section class="landing-page section active" id="landingSection">
-        <div class="landing-left">
-            <div class="slideshow" id="slideshow">
-                <div class="slide active" style="background-image: url('Photos/IMG_4687.jpg');">
-                    <div class="slide-overlay"></div>
-                </div>
-                <div class="slide" style="background-image: url('Photos/IMG_4101.jpg');">
-                    <div class="slide-overlay"></div>
-                </div>
-                <div class="slide" style="background-image: url('Photos/IMG_4105.jpg');">
-                    <div class="slide-overlay"></div>
-                </div>
-            </div>
-        </div>
-        <div class="landing-right">
-            <div class="logo-container">
-                <img src="Logo/Image1.png" alt="zAIOps Logo" class="badminton-icon">
-                <div class="logo-text">
-                    <span class="logo-zaiops">zAIOps</span>
-                    <span class="logo-badminton">BADMINTON</span>
+        <div class="hero-slideshow" id="heroSlideshow">
+            <div class="hero-slide active" style="background-image: url('Photos/IMG_4687.jpg');">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <div class="logo-container">
+                        <img src="Logo/Image1.png" alt="zAIOps Logo" class="hero-logo">
+                    </div>
+                    <h1 class="hero-title">zAIOps Badminton Tournament 2026</h1>
+                    <p class="hero-subtitle">Join us for an exciting badminton tournament</p>
+                    <button class="hero-register-btn" onclick="showRegistrationForm()">Register Now</button>
                 </div>
             </div>
-            <h1 class="landing-title">Badminton Tournament 2026</h1>
-            <button class="register-now-btn" onclick="showRegistrationForm()">Register Now</button>
+            <div class="hero-slide" style="background-image: url('Photos/IMG_4101.jpg');">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <div class="logo-container">
+                        <img src="Logo/Image1.png" alt="zAIOps Logo" class="hero-logo">
+                    </div>
+                    <h1 class="hero-title">Compete with the Best</h1>
+                    <p class="hero-subtitle">Show your skills on the court</p>
+                    <button class="hero-register-btn" onclick="showRegistrationForm()">Register Now</button>
+                </div>
+            </div>
+            <div class="hero-slide" style="background-image: url('Photos/IMG_4105.jpg');">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <div class="logo-container">
+                        <img src="Logo/Image1.png" alt="zAIOps Logo" class="hero-logo">
+                    </div>
+                    <h1 class="hero-title">Experience the Thrill</h1>
+                    <p class="hero-subtitle">Be part of something amazing</p>
+                    <button class="hero-register-btn" onclick="showRegistrationForm()">Register Now</button>
+                </div>
+            </div>
+            
+            <!-- Navigation Arrows -->
+            <button class="hero-arrow hero-arrow-left" onclick="changeSlide(-1)">❮</button>
+            <button class="hero-arrow hero-arrow-right" onclick="changeSlide(1)">❯</button>
+            
+            <!-- Slide Indicators -->
+            <div class="hero-indicators">
+                <span class="hero-dot active" onclick="goToSlide(0)"></span>
+                <span class="hero-dot" onclick="goToSlide(1)"></span>
+                <span class="hero-dot" onclick="goToSlide(2)"></span>
+            </div>
         </div>
     </section>
 

@@ -1,15 +1,58 @@
-// Slideshow functionality
+// Hero Slideshow functionality
 let currentSlide = 0;
+let slideshowInterval;
 
 function startSlideshow() {
-    const slides = document.querySelectorAll('.slide');
+    const slides = document.querySelectorAll('.hero-slide');
     if (slides.length === 0) return;
     
-    setInterval(() => {
-        slides[currentSlide].classList.remove('active');
-        currentSlide = (currentSlide + 1) % slides.length;
-        slides[currentSlide].classList.add('active');
-    }, 3000);
+    slideshowInterval = setInterval(() => {
+        changeSlide(1);
+    }, 5000);
+}
+
+function changeSlide(direction) {
+    const slides = document.querySelectorAll('.hero-slide');
+    const dots = document.querySelectorAll('.hero-dot');
+    
+    if (slides.length === 0) return;
+    
+    // Remove active class
+    slides[currentSlide].classList.remove('active');
+    dots[currentSlide].classList.remove('active');
+    
+    // Calculate new slide
+    currentSlide = (currentSlide + direction + slides.length) % slides.length;
+    
+    // Add active class
+    slides[currentSlide].classList.add('active');
+    dots[currentSlide].classList.add('active');
+    
+    // Reset interval
+    clearInterval(slideshowInterval);
+    startSlideshow();
+}
+
+function goToSlide(index) {
+    const slides = document.querySelectorAll('.hero-slide');
+    const dots = document.querySelectorAll('.hero-dot');
+    
+    if (slides.length === 0) return;
+    
+    // Remove active class
+    slides[currentSlide].classList.remove('active');
+    dots[currentSlide].classList.remove('active');
+    
+    // Set new slide
+    currentSlide = index;
+    
+    // Add active class
+    slides[currentSlide].classList.add('active');
+    dots[currentSlide].classList.add('active');
+    
+    // Reset interval
+    clearInterval(slideshowInterval);
+    startSlideshow();
 }
 
 // Initialize slideshow on page load
