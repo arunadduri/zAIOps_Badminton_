@@ -51,7 +51,7 @@ function backToLanding() {
 
 // Search functionality
 function handleSearch(query) {
-    const results = document.getElementById('searchResults');
+    const results = document.getElementById('topSearchResults');
     if (!query) {
         results.classList.remove('active');
         return;
@@ -66,19 +66,30 @@ function handleSearch(query) {
         { name: 'All Registrations', section: 'registrations' }
     ];
     
-    const filtered = items.filter(item => 
+    const filtered = items.filter(item =>
         item.name.toLowerCase().includes(query.toLowerCase())
     );
     
     if (filtered.length > 0) {
-        results.innerHTML = filtered.map(item => 
-            `<div class="search-result-item" onclick="showSection('${item.section}')">${item.name}</div>`
+        results.innerHTML = filtered.map(item =>
+            `<div class="search-result-item" onclick="showSection('${item.section}'); document.getElementById('topSearchInput').value = ''; document.getElementById('topSearchResults').classList.remove('active');">${item.name}</div>`
         ).join('');
         results.classList.add('active');
     } else {
-        results.classList.remove('active');
+        results.innerHTML = '<div class="search-result-item">No results found</div>';
+        results.classList.add('active');
     }
 }
+
+// Close search results when clicking outside
+document.addEventListener('click', function(event) {
+    const topSearch = document.querySelector('.top-search');
+    const resultsDiv = document.getElementById('topSearchResults');
+    
+    if (topSearch && !topSearch.contains(event.target)) {
+        resultsDiv.classList.remove('active');
+    }
+});
 
 // Gallery tab switching
 function switchGalleryTab(tab) {
