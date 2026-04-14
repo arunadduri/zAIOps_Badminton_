@@ -204,9 +204,9 @@ body {
 }
 
 /* Landing Page */
-.landing-page { 
-    height: 100vh; 
-    display: flex; 
+.landing-page {
+    min-height: 100vh;
+    display: flex;
 }
 
 .landing-left { 
