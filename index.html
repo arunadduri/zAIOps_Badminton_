@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>zAIOps Badminton Tournament 2026</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
+</head>
+<body>
+    <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+    
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <h2>zAIOps Tournament</h2>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="#" onclick="showSection('landing')">🏠 Home</a></li>
+            <li><a href="#" onclick="showSection('rules')">📋 Rules</a></li>
+            <li><a href="#" onclick="showSection('gallery')">📸 Gallery</a></li>
+            <li><a href="#" onclick="showSection('registrations')">👥 Registrations</a></li>
+        </ul>
+        <div class="search-container">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="Search..." oninput="handleSearch(this.value)">
+                <div class="search-results" id="searchResults"></div>
+            </div>
+        </div>
+    </div>
+
+    <section class="landing-page section active" id="landingSection">
+        <div class="landing-left">
+            <div class="slideshow" id="slideshow">
+                <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?w=1920&q=80');">
+                    <div class="slide-overlay"></div>
+                </div>
+                <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=1920&q=80');">
+                    <div class="slide-overlay"></div>
+                </div>
+                <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1593786481097-b5f9e6e48e6e?w=1920&q=80');">
+                    <div class="slide-overlay"></div>
+                </div>
+            </div>
+        </div>
+        <div class="landing-right">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200'%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='48' font-weight='bold' fill='%2300d4ff'%3EzAIOps%3C/text%3E%3Ctext x='50%25' y='75%25' dominant-baseline='middle' text-anchor='middle' font-family='Arial' font-size='32' fill='%23ff6b35'%3EBADMINTON%3C/text%3E%3C/svg%3E" alt="zAIOps Logo" class="landing-logo">
+            <h1 class="landing-title">Badminton Tournament 2026</h1>
+            <p class="landing-subtitle">Join the Ultimate Competition</p>
+            <button class="register-now-btn" onclick="showRegistrationForm()">Register Now</button>
+        </div>
+    </section>
+
+    <section class="section looking-for-section" id="lookingForSection">
+        <h2 class="section-title">What are you looking for?</h2>
+        <div class="options-grid">
+            <div class="option-card" onclick="showSection('fixtures')">
+                <div class="option-icon">📅</div>
+                <h3>Fixtures</h3>
+                <p>View tournament schedule</p>
+            </div>
+            <div class="option-card" onclick="showSection('stats')">
+                <div class="option-icon">📊</div>
+                <h3>Stats</h3>
+                <p>Player statistics</p>
+            </div>
+            <div class="option-card" onclick="showSection('gallery')">
+                <div class="option-icon">📸</div>
+                <h3>Gallery</h3>
+                <p>Tournament photos</p>
+            </div>
+            <div class="option-card" onclick="showSection('rules')">
+                <div class="option-icon">📋</div>
+                <h3>Rules</h3>
+                <p>Tournament regulations</p>
+            </div>
+            <div class="option-card" onclick="showSection('registrations')">
+                <div class="option-icon">👥</div>
+                <h3>All Registrations</h3>
+                <p>View registered players</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="registrationSection">
+        <button class="back-btn" onclick="backToLanding()">← Back</button>
+        
+        <div id="successOverlay" class="success-overlay">
+            <div class="success-content">
+                <div class="checkmark">✓</div>
+                <h2>Congratulations!</h2>
+                <p>You have successfully registered for:</p>
+                <div class="categories" id="registeredCategories"></div>
+                <p>Good luck in the tournament! 🏸</p>
+                <button class="home-button" onclick="closeSuccessOverlay()">Register Another Category</button>
+            </div>
+        </div>
+
+        <div class="form-container">
+            <div class="form-header">
+                <h1>Tournament Registration</h1>
+                <p style="color: var(--text-gray);">Fill in your details to register</p>
+            </div>
+            
+            <div id="successMessage" class="message success-message"></div>
+            <div id="errorMessage" class="message error-message"></div>
+            
+            <form id="registrationForm">
+                <div class="form-group">
+                    <label for="name">Full Name *</label>
+                    <input type="text" id="name" required placeholder="Enter your full name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">IBM Email ID *</label>
+                    <input type="email" id="email" required placeholder="your.name@ibm.com">
+                </div>
+                
+                <div class="form-group">
+                    <label>Gender *</label>
+                    <div class="radio-group">
+                        <div class="radio-option">
+                            <input type="radio" id="male" name="gender" value="Male" required>
+                            <label for="male">Male</label>
+                        </div>
+                        <div class="radio-option">
+                            <input type="radio" id="female" name="gender" value="Female" required>
+                            <label for="female">Female</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="categorySection" class="form-group hidden">
+                    <label>Select Categories *</label>
+                    <div class="checkbox-group" id="categoryOptions"></div>
+                </div>
+                
+                <div id="partnerSection" class="hidden"></div>
+                
+                <div id="loadingSpinner" class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p>Submitting...</p>
+                </div>
+                
+                <button type="submit" id="submitBtn" class="submit-btn">Register Now</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="section" id="fixturesSection">
+        <div class="content-container">
+            <h1 class="section-title">Fixtures</h1>
+            <div class="coming-soon">
+                <div class="coming-soon-icon">🏆</div>
+                <h2>Coming Soon</h2>
+                <p>Tournament fixtures will be announced shortly</p>
+                <button class="home-button" onclick="showSection('landing')">Back to Home</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="statsSection">
+        <div class="content-container">
+            <h1 class="section-title">Statistics</h1>
+            <div class="coming-soon">
+                <div class="coming-soon-icon">📈</div>
+                <h2>Coming Soon</h2>
+                <p>Player statistics will be available after the tournament begins</p>
+                <button class="home-button" onclick="showSection('landing')">Back to Home</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="gallerySection">
+        <div class="content-container">
+            <h1 class="section-title">Gallery</h1>
+            <div class="gallery-tabs">
+                <button class="gallery-tab active" onclick="switchGalleryTab('earlier')">Earlier Tournaments</button>
+                <button class="gallery-tab" onclick="switchGalleryTab('2026')">zAIOps 2026</button>
+            </div>
+            <div class="gallery-content active" id="earlierGallery">
+                <div class="gallery-grid">
+                    <p style="text-align: center; color: var(--text-gray); grid-column: 1/-1; padding: 40px;">No images uploaded yet. Upload your tournament photos here!</p>
+                </div>
+            </div>
+            <div class="gallery-content" id="2026Gallery">
+                <div class="coming-soon">
+                    <div class="coming-soon-icon">📷</div>
+                    <h2>Coming Soon</h2>
+                    <p>zAIOps 2026 tournament photos will be available during the event</p>
+                </div>
+            </div>
+            <button class="home-button" onclick="showSection('landing')" style="display: block; margin: 40px auto 0;">Back to Home</button>
+        </div>
+    </section>
+
+    <section class="section" id="rulesSection">
+        <div class="content-container">
+            <h1 class="section-title">Tournament Rules</h1>
+            <div class="rules-content">
+                <h2>🏸 BADMINTON TOURNAMENT RULES (KNOCKOUT FORMAT)</h2>
+                <p style="text-align: center; color: var(--text-gray); margin-bottom: 30px;">Based on Badminton World Federation standards</p>
+                
+                <h3>1️⃣ TOURNAMENT FORMAT</h3>
+                <ul>
+                    <li><strong>Type:</strong> Knockout (Elimination)</li>
+                    <li>Lose → eliminated</li>
+                    <li>Winner advances to next round</li>
+                </ul>
+                
+                <h3>2️⃣ MATCH FORMAT</h3>
+                <ul>
+                    <li>Match = Best of 3 games</li>
+                    <li>Each game = 21 points</li>
+                    <li>Rally scoring system</li>
+                </ul>
+                <p><strong>Winning Rules:</strong></p>
+                <ul>
+                    <li>First to 21 points</li>
+                    <li>Must win by 2 points</li>
+                    <li>At 20–20 → continue until 2-point lead</li>
+                    <li>Max cap = 30 points (30–29)</li>
+                </ul>
+                
+                <h3>3️⃣ CATEGORIES (ALL 5 FORMATS)</h3>
+                <ul>
+                    <li>👨 Men Singles (1 vs 1)</li>
+                    <li>👩 Women Singles (1 vs 1)</li>
+                    <li>👨👨 Men Doubles (2 vs 2)</li>
+                    <li>👩👩 Women Doubles (2 vs 2)</li>
+                    <li>👨👩 Mixed Doubles (2 vs 2, male + female)</li>
+                </ul>
+                
+                <h3>4️⃣ COURT LINES & VALID AREAS</h3>
+                <p>Court markings include:</p>
+                <ul>
+                    <li>Outer sidelines (full width)</li>
+                    <li>Inner sidelines (singles width)</li>
+                    <li>Baseline (back boundary)</li>
+                    <li>Short service line</li>
+                    <li>Long service line (only for doubles serve)</li>
+                    <li>Center line</li>
+                </ul>
+                
+                <h3>👨👩 SINGLES – VALID AREAS</h3>
+                <p><strong>During Rally:</strong></p>
+                <ul>
+                    <li>Width → Inner sidelines</li>
+                    <li>Length → Full court (baseline included)</li>
+                </ul>
+                <p>✅ <strong>Valid:</strong> Inside inner sidelines, Up to baseline</p>
+                <p>❌ <strong>Fault:</strong> Outside inner sidelines, Beyond baseline</p>
+                
+                <h3>👨👨 / 👩👩 / 👨👩 DOUBLES – VALID AREAS</h3>
+                <p><strong>During Rally:</strong></p>
+                <ul>
+                    <li>Width → Outer sidelines (full width)</li>
+                    <li>Length → Full court (baseline included)</li>
+                </ul>
+                <p>✅ <strong>Valid:</strong> Full court</p>
+                <p>❌ <strong>Fault:</strong> Outside outer sidelines, Beyond baseline</p>
+                
+                <h3>5️⃣ SERVICE RULES</h3>
+                <p><strong>General Rules:</strong></p>
+                <ul>
+                    <li>Serve must be diagonal</li>
+                    <li>Shuttle hit below waist</li>
+                    <li>Racket pointing downward</li>
+                    <li>Feet inside service court</li>
+                    <li>Feet stationary</li>
+                </ul>
+                
+                <p><strong>👨👩 Singles – Service Area:</strong></p>
+                <ul>
+                    <li>Width → Inner sidelines</li>
+                    <li>Length → Short service line → Baseline</li>
+                </ul>
+                
+                <p><strong>👨👨 / 👩👩 / 👨👩 Doubles – Service Area:</strong></p>
+                <ul>
+                    <li>Width → Outer sidelines</li>
+                    <li>Length → Short service line → Long service line</li>
+                    <li>👉 Baseline is NOT valid for serve</li>
+                </ul>
+                
+                <h3>6️⃣ SERVING POSITIONS</h3>
+                <p><strong>Singles:</strong></p>
+                <ul>
+                    <li>Even score → serve from right</li>
+                    <li>Odd score → serve from left</li>
+                </ul>
+                
+                <p><strong>Doubles / Mixed:</strong></p>
+                <ul>
+                    <li>Even score → serve from right</li>
+                    <li>Odd score → serve from left</li>
+                </ul>
+                
+                <p><strong>Rotation Rules:</strong></p>
+                <ul>
+                    <li>One serve per side</li>
+                    <li>If serving side wins: Same server continues, Players switch sides</li>
+                    <li>If receiving side wins: They gain serve</li>
+                </ul>
+                
+                <h3>7️⃣ RALLY RULES</h3>
+                <ul>
+                    <li>Shuttle must cross the net</li>
+                    <li>Shuttle landing on line = IN</li>
+                    <li>Rally ends when: Shuttle hits ground, Fault occurs</li>
+                </ul>
+                
+                <h3>8️⃣ FAULTS</h3>
+                <ul>
+                    <li>Shuttle outside valid boundaries</li>
+                    <li>Serve outside correct service area</li>
+                    <li>Shuttle fails to cross net</li>
+                    <li>Shuttle hits obstruction</li>
+                    <li>Player touches net</li>
+                    <li>Double hit / carry</li>
+                    <li>Illegal serve</li>
+                </ul>
+                
+                <h3>9️⃣ LET (REPLAY)</h3>
+                <ul>
+                    <li>Shuttle stuck on net</li>
+                    <li>Receiver not ready</li>
+                    <li>External disturbance</li>
+                </ul>
+                
+                <h3>🔟 INTERVALS</h3>
+                <ul>
+                    <li>60 sec break at 11 points</li>
+                    <li>2 min between games</li>
+                    <li>Change sides: After each game, In 3rd game at 11 points</li>
+                </ul>
+            </div>
+            <button class="home-button" onclick="showSection('landing')" style="display: block; margin: 40px auto 0;">Back to Home</button>
+        </div>
+    </section>
+
+    <section class="section" id="registrationsSection">
+        <div class="content-container">
+            <h1 class="section-title">All Registrations</h1>
+            <div class="registrations-container" id="registrationsContainer">
+                <div class="loading-spinner" id="registrationsLoading" style="display: block;">
+                    <div class="spinner"></div>
+                    <p>Loading registrations...</p>
+                </div>
+            </div>
+            <button class="home-button" onclick="showSection('landing')" style="display: block; margin: 40px auto 0;">Back to Home</button>
+        </div>
+    </section>
+
+    <script src="js/config.js"></script>
+    <script src="js/navigation.js"></script>
+    <script src="js/registration.js"></script>
+    <script src="js/display.js"></script>
+</body>
+</html>
