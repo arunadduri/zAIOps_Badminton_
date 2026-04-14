@@ -26,18 +26,19 @@
             <li><a href="#" onclick="showSection('rules')">📋 Rules</a></li>
             <li><a href="#" onclick="showSection('gallery')">📸 Gallery</a></li>
             <li><a href="#" onclick="showSection('registrations')">👥 Registrations</a></li>
+            <li><a href="#" onclick="showSection('news')">📰 News</a></li>
         </ul>
     </div>
 
     <section class="landing-page section active" id="landingSection">
         <div class="hero-slideshow" id="heroSlideshow">
+            <!-- Logo on all slides -->
+            <img src="Logo/Image1.png" alt="zAIOps Logo" class="hero-logo-fixed">
+            
             <div class="hero-slide active" style="background-image: url('Photos/81c7b00f-a8b0-4782-af30-a54fdfe053e2.jpg');">
                 <div class="hero-overlay"></div>
                 <div class="hero-content">
-                    <div class="hero-title-with-logo">
-                        <img src="Logo/Image1.png" alt="zAIOps Logo" class="hero-logo-inline">
-                        <h1 class="hero-title">zAIOps Badminton Tournament 2026</h1>
-                    </div>
+                    <h1 class="hero-title">zAIOps Badminton Tournament 2026</h1>
                     <p class="hero-subtitle">Join us for an exciting badminton tournament</p>
                     <button class="hero-register-btn" onclick="showRegistrationForm()">Register Now</button>
                 </div>
@@ -379,6 +380,20 @@
                 <button class="registration-tab active" onclick="switchRegistrationTab('mensSingles')">Men's Singles</button>
                 <button class="registration-tab" onclick="switchRegistrationTab('mensDoubles')">Men's Doubles</button>
                 <button class="registration-tab" onclick="switchRegistrationTab('womensSingles')">Women's Singles</button>
+
+    <section class="section" id="newsSection">
+        <div class="content-container">
+            <h1 class="section-title">Tournament News</h1>
+            <div class="news-container">
+                <div class="no-news">
+                    <div class="no-news-icon">📰</div>
+                    <h2>No News Yet</h2>
+                    <p>Stay tuned for tournament updates and announcements</p>
+                </div>
+            </div>
+            <button class="home-button" onclick="showSection('landing')" style="display: block; margin: 40px auto 0;">Back to Home</button>
+        </div>
+    </section>
                 <button class="registration-tab" onclick="switchRegistrationTab('womensDoubles')">Women's Doubles</button>
                 <button class="registration-tab" onclick="switchRegistrationTab('mixedDoubles')">Mixed Doubles</button>
             </div>
