@@ -104,7 +104,7 @@ async function loadGalleryImages() {
     
     try {
         // Fetch from GitHub API
-        const response = await fetch('https://api.github.com/repos/arunadduri/zAIOps_Badminton_/contents/images');
+        const response = await fetch('https://api.github.com/repos/arunadduri/zAIOps_Badminton_/contents/Photos');
         const files = await response.json();
         
         // Filter image files
@@ -125,7 +125,7 @@ async function loadGalleryImages() {
         imageFiles.forEach((file, index) => {
             const galleryItem = document.createElement('div');
             galleryItem.className = 'gallery-item';
-            galleryItem.innerHTML = `<img src="imgaes/${file.name}" alt="Tournament Photo ${index + 1}" loading="lazy" onerror="this.parentElement.style.display='none'">`;
+            galleryItem.innerHTML = `<img src="Photos/${file.name}" alt="Tournament Photo ${index + 1}" loading="lazy" onerror="this.parentElement.style.display='none'">`;
             galleryGrid.appendChild(galleryItem);
         });
     } catch (error) {
