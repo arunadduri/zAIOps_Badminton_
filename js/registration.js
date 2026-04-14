@@ -113,7 +113,7 @@ function showError(message, fieldId = null) {
     
     errorTimeout = setTimeout(() => {
         errorDiv.style.display = 'none';
-    }, 7000);
+    }, 15000);
 }
 
 function clearError() {

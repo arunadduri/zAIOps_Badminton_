@@ -573,7 +573,7 @@ body {
 /* Form Styles */
 .form-container {
     max-width: 800px;
-    margin: 0 auto;
+    margin: 80px auto;
     background: var(--card-bg);
     border-radius: 20px;
     padding: 40px;
@@ -751,35 +751,41 @@ body {
 /* Registration Tabs */
 .registration-tabs {
     display: flex;
-    gap: 10px;
-    margin-bottom: 30px;
+    gap: 15px;
+    margin-bottom: 40px;
     flex-wrap: wrap;
     justify-content: center;
 }
 
 .registration-tab {
-    padding: 12px 24px;
-    background: var(--card-bg);
-    border: 2px solid rgba(0, 212, 255, 0.3);
-    border-radius: 8px;
+    padding: 18px 35px;
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(255, 107, 0, 0.1));
+    border: 3px solid rgba(0, 212, 255, 0.4);
+    border-radius: 12px;
     color: var(--text-light);
-    font-size: 16px;
-    font-weight: 500;
+    font-size: 20px;
+    font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .registration-tab:hover {
     border-color: var(--primary-cyan);
-    background: rgba(0, 212, 255, 0.1);
-    transform: translateY(-2px);
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(255, 107, 0, 0.2));
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0, 212, 255, 0.4);
 }
 
 .registration-tab.active {
     background: linear-gradient(90deg, var(--primary-cyan), var(--primary-orange));
     color: var(--dark-bg);
     border-color: transparent;
-    font-weight: 600;
+    font-weight: 700;
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 212, 255, 0.6);
 }
     border: 1px solid #ff4444; 
 }
