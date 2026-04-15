@@ -990,63 +990,66 @@ html {
 .registration-tabs {
     display: flex;
     gap: 12px;
-    margin: 20px 0 30px;
     flex-wrap: wrap;
+    margin: 20px 0;
     justify-content: center;
-    background: rgba(0, 0, 0, 0.3);
-    padding: 8px;
-    border-radius: 50px;
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(0, 212, 255, 0.2);
-    max-width: fit-content;
-    margin-left: auto;
-    margin-right: auto;
+    padding: 0 10px;
 }
 
+/* Base Tab */
 .registration-tab {
-    padding: 12px 24px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1.5px solid rgba(0, 212, 255, 0.25);
-    border-radius: 50px;
-    color: rgba(255, 255, 255, 0.85);
+    padding: 10px 16px;
+    border-radius: 999px;
     font-size: 14px;
-    font-weight: 600;
+    font-weight: 500;
+    border: none;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
-    overflow: hidden;
-    backdrop-filter: blur(8px);
-    display: inline-flex;
+    color: white;
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
 }
 
-.registration-tab::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 212, 255, 0.1);
-    border-radius: 50px;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.registration-tab:hover::before {
-    opacity: 1;
-}
-
+/* Hover */
 .registration-tab:hover {
-    color: var(--text-light);
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1.03);
+    opacity: 0.9;
 }
 
+/* Category-Specific Colors */
+/* Men's Singles */
+.registration-tab:nth-child(1) {
+    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+}
+
+/* Men's Doubles */
+.registration-tab:nth-child(2) {
+    background: linear-gradient(135deg, #2563eb, #9333ea);
+}
+
+/* Women's Singles */
+.registration-tab:nth-child(3) {
+    background: linear-gradient(135deg, #ec4899, #f43f5e);
+}
+
+/* Women's Doubles */
+.registration-tab:nth-child(4) {
+    background: linear-gradient(135deg, #db2777, #7c3aed);
+}
+
+/* Mixed Doubles */
+.registration-tab:nth-child(5) {
+    background: linear-gradient(135deg, #f59e0b, #ef4444);
+}
+
+/* Active Tab */
 .registration-tab.active {
-    background: linear-gradient(135deg, var(--primary-cyan), var(--primary-orange));
-    color: var(--dark-bg);
-    border-color: transparent;
-    box-shadow: 0 6px 25px rgba(0, 212, 255, 0.5), 0 0 30px rgba(0, 212, 255, 0.3);
-    transform: translateY(-2px) scale(1.05);
-    font-weight: 700;
+    transform: scale(1.08);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    outline: 2px solid rgba(255, 255, 255, 0.6);
 
 /* News Section */
 .news-container {
@@ -1564,10 +1567,11 @@ html {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     text-align: center;
     width: 100%;
     max-width: 380px;
-    padding: 20px 18px;
+    padding: 22px 22px 28px;
     max-height: unset;
     overflow: hidden;
     background: linear-gradient(135deg, rgba(26, 41, 66, 0.95), rgba(10, 22, 40, 0.95));
@@ -1623,17 +1627,21 @@ html {
 
 .checkmark-container {
     position: relative;
-    display: inline-block;
-    margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
     z-index: 1;
 }
 
 .success-content .checkmark {
-    font-size: 100px;
+    font-size: 60px;
     color: #4caf50;
     animation: pop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     display: inline-block;
     text-shadow: 0 0 30px rgba(76, 175, 80, 0.6);
+    margin-bottom: 8px;
 }
 
 .success-glow {
@@ -1650,8 +1658,9 @@ html {
 }
 
 .success-title {
-    font-size: 28px;
-    margin: 6px 0 2px;
+    font-size: 22px;
+    margin-top: 0;
+    margin-bottom: 6px;
     color: var(--text-light);
     font-weight: 700;
     position: relative;
@@ -1661,7 +1670,7 @@ html {
 .success-subtitle {
     font-size: 13px;
     color: var(--text-gray);
-    margin-bottom: 8px;
+    margin-bottom: 12px;
     position: relative;
     z-index: 1;
 }
@@ -1671,7 +1680,7 @@ html {
     flex-wrap: wrap;
     gap: 8px;
     justify-content: center;
-    margin: 8px 0;
+    margin: 10px 0;
     position: relative;
     z-index: 1;
 }
@@ -1694,7 +1703,7 @@ html {
 .registration-info {
     font-size: 12px;
     color: var(--text-gray);
-    margin: 6px 0;
+    margin: 10px 0;
     padding: 8px;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 8px;
@@ -1705,7 +1714,7 @@ html {
 .success-message {
     font-size: 14px;
     color: var(--text-light);
-    margin: 8px 0;
+    margin: 10px 0;
     padding: 6px 10px;
     font-weight: 500;
     position: relative;
@@ -1721,8 +1730,8 @@ html {
 }
 
 .whats-next-section {
-    margin-top: 10px;
-    padding: 10px;
+    margin-top: 12px;
+    padding: 14px;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -1771,7 +1780,7 @@ html {
     display: flex;
     flex-direction: column;
     gap: 8px;
-    margin-top: 12px;
+    margin-top: 14px;
     position: relative;
     z-index: 1;
 }
