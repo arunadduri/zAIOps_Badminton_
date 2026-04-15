@@ -42,6 +42,12 @@ const fallbackImages = [
 // Gallery lightbox state
 let galleryImages = [];
 let currentLightboxIndex = 0;
+let lightboxScale = 1;
+let lightboxPosX = 0;
+let lightboxPosY = 0;
+let lightboxIsDragging = false;
+let lightboxStartX = 0;
+let lightboxStartY = 0;
 
 // Load gallery images from local Photos directory
 function loadGalleryImages() {
@@ -104,6 +110,7 @@ function openLightbox(index) {
     if (!lightbox || !lightboxImg || galleryImages.length === 0) return;
 
     currentLightboxIndex = Math.max(0, Math.min(index, galleryImages.length - 1));
+    resetLightboxTransform();
     lightboxImg.src = galleryImages[currentLightboxIndex];
     updateLightboxCounter();
     lightbox.style.display = 'flex';
@@ -117,6 +124,8 @@ function closeLightbox() {
         lightbox.classList.remove('active');
         lightbox.style.display = 'none';
     }
+    lightboxIsDragging = false;
+    resetLightboxTransform();
     document.body.style.overflow = '';
 }
 
@@ -127,6 +136,7 @@ function navigateLightbox(direction) {
     const lightboxImg = document.getElementById('lightbox-img');
 
     if (lightboxImg) {
+        resetLightboxTransform();
         lightboxImg.src = galleryImages[currentLightboxIndex];
         updateLightboxCounter();
     }
@@ -137,6 +147,25 @@ function updateLightboxCounter() {
     if (counter && galleryImages.length > 0) {
         counter.textContent = `${currentLightboxIndex + 1} / ${galleryImages.length}`;
     }
+}
+
+function updateLightboxTransform() {
+    const lightboxImg = document.getElementById('lightbox-img');
+    if (!lightboxImg) return;
+
+    lightboxImg.style.transform = `translate(${lightboxPosX}px, ${lightboxPosY}px) scale(${lightboxScale})`;
+}
+
+function resetLightboxTransform() {
+    const lightboxImg = document.getElementById('lightbox-img');
+    lightboxScale = 1;
+    lightboxPosX = 0;
+    lightboxPosY = 0;
+
+    if (!lightboxImg) return;
+
+    lightboxImg.style.transform = 'translate(0px, 0px) scale(1)';
+    lightboxImg.style.cursor = 'grab';
 }
 
 document.addEventListener('keydown', function(e) {
@@ -156,11 +185,58 @@ document.addEventListener('DOMContentLoaded', function() {
     loadGalleryImages();
 
     const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+
     if (lightbox) {
         lightbox.addEventListener('click', function(e) {
             if (e.target === lightbox) {
                 closeLightbox();
             }
+        });
+    }
+
+    if (lightboxImg) {
+        resetLightboxTransform();
+
+        lightboxImg.addEventListener('wheel', function(e) {
+            e.preventDefault();
+            lightboxScale += e.deltaY * -0.0015;
+            lightboxScale = Math.min(Math.max(1, lightboxScale), 3);
+            updateLightboxTransform();
+        });
+
+        lightboxImg.addEventListener('mousedown', function(e) {
+            e.preventDefault();
+            lightboxIsDragging = true;
+            lightboxStartX = e.clientX - lightboxPosX;
+            lightboxStartY = e.clientY - lightboxPosY;
+            lightboxImg.style.cursor = 'grabbing';
+        });
+
+        lightboxImg.addEventListener('dblclick', function(e) {
+            e.preventDefault();
+            if (lightboxScale > 1) {
+                resetLightboxTransform();
+            } else {
+                lightboxScale = 2;
+                lightboxPosX = 0;
+                lightboxPosY = 0;
+                updateLightboxTransform();
+                lightboxImg.style.cursor = 'grab';
+            }
+        });
+
+        document.addEventListener('mouseup', function() {
+            if (!lightboxIsDragging) return;
+            lightboxIsDragging = false;
+            lightboxImg.style.cursor = 'grab';
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (!lightboxIsDragging) return;
+            lightboxPosX = e.clientX - lightboxStartX;
+            lightboxPosY = e.clientY - lightboxStartY;
+            updateLightboxTransform();
         });
     }
 });
