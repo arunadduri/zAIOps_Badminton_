@@ -281,9 +281,16 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Show success overlay
             if (successful.length > 0) {
-                // Format categories
+                // Format categories as chips
+                const categoryIcons = {
+                    "Men's Singles": "👨",
+                    "Men's Doubles": "👨👨",
+                    "Women's Singles": "👩",
+                    "Women's Doubles": "👩👩",
+                    "Mixed Doubles": "👨👩"
+                };
                 document.getElementById('registeredCategories').innerHTML =
-                    successful.map(cat => cat).join(' • ');
+                    successful.map(cat => `<span class="chip">${categoryIcons[cat] || '🏸'} ${cat}</span>`).join('');
                 
                 // Add registration info with timestamp
                 const now = new Date();
