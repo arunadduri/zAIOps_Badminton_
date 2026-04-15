@@ -987,9 +987,11 @@ html {
     border: 1px solid #4caf50; 
 }
 
-.error-message { 
-    background-color: rgba(255, 68, 68, 0.2); 
-    color: #ff4444; 
+.error-message {
+    background-color: rgba(255, 68, 68, 0.2);
+    color: #ff4444;
+    border: 1px solid #ff4444;
+}
 
 /* Registration Tabs */
 .registration-tabs {
@@ -1055,6 +1057,7 @@ html {
     transform: scale(1.08);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
     outline: 2px solid rgba(255, 255, 255, 0.6);
+}
 
 /* News Section */
 .news-container {
@@ -1088,12 +1091,6 @@ html {
 .no-news p {
     font-size: 18px;
     color: var(--text-gray);
-}
-    font-weight: 700;
-    transform: scale(1.05);
-    box-shadow: 0 8px 25px rgba(0, 212, 255, 0.6);
-}
-    border: 1px solid #ff4444; 
 }
 
 /* Options Grid with Animation */
