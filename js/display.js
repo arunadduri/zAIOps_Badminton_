@@ -306,8 +306,7 @@ function displayFilteredRegistrations() {
             <thead class="sticky-header">
                 <tr>
                     <th class="col-name">Name</th>
-                    <th class="col-email">Email</th>
-                    ${hasPartner ? '<th class="col-partner">Partner Name</th><th class="col-partner-email">Partner Email</th>' : ''}
+                    ${hasPartner ? '<th class="col-partner">Partner Name</th>' : ''}
                     <th class="col-time">Registered</th>
                     <th class="col-status">Status</th>
                 </tr>
@@ -321,7 +320,6 @@ function displayFilteredRegistrations() {
                                 <span class="player-name">${reg.name}</span>
                             </div>
                         </td>
-                        <td class="col-email">${reg.email}</td>
                         ${hasPartner ? `
                             <td class="col-partner">
                                 <div class="player-info">
@@ -329,7 +327,6 @@ function displayFilteredRegistrations() {
                                     <span class="player-name">${reg.partner_name || '-'}</span>
                                 </div>
                             </td>
-                            <td class="col-partner-email">${reg.partner_email || '-'}</td>
                         ` : ''}
                         <td class="col-time">${formatRelativeTime(reg.created_at)}</td>
                         <td class="col-status">
@@ -365,12 +362,9 @@ function filterRegistrations(searchTerm) {
     
     rows.forEach(row => {
         const name = row.querySelector('.player-name')?.textContent.toLowerCase() || '';
-        const email = row.querySelector('.col-email')?.textContent.toLowerCase() || '';
         const partnerName = row.querySelector('.col-partner .player-name')?.textContent.toLowerCase() || '';
-        const partnerEmail = row.querySelector('.col-partner-email')?.textContent.toLowerCase() || '';
-        
-        const matches = name.includes(term) || email.includes(term) || 
-                       partnerName.includes(term) || partnerEmail.includes(term);
+
+        const matches = name.includes(term) || partnerName.includes(term);
         
         if (matches || term === '') {
             row.style.display = '';

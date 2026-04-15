@@ -456,9 +456,10 @@ html {
 
 .hero-slideshow {
     width: 100%;
-    height: calc(100vh - 80px);
+    height: 100vh;
     position: relative;
     overflow: hidden;
+    margin-top: 0;
 }
 
 .hero-slide {
@@ -1392,7 +1393,7 @@ html {
 
 /* Section padding fix for header overlap */
 .section {
-    padding-top: 100px;
+    padding-top: 0;
 }
 
 /* Registrations */
