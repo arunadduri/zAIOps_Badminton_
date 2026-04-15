@@ -575,13 +575,16 @@
 
     <section class="section" id="registrationsSection">
         <div class="content-container">
-            <h1 class="section-title">All Registrations</h1>
+            <div class="page-header">
+                <h1 class="section-title">All Registrations</h1>
+                <p class="section-subtitle">Browse players across all categories</p>
+            </div>
             
-            <!-- Search and Filter Bar -->
+            <!-- Enhanced Search Bar -->
             <div class="search-filter-bar">
-                <div class="search-box">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" id="playerSearchInput" placeholder="Search by name or email..." onkeyup="filterRegistrations(this.value)">
+                <div class="search-box-enhanced">
+                    <span class="search-icon-enhanced">🔍</span>
+                    <input type="text" id="playerSearchInput" placeholder="Search players by name or email..." onkeyup="filterRegistrations(this.value)">
                 </div>
             </div>
             
@@ -589,6 +592,17 @@
                 <button class="registration-tab active" onclick="switchRegistrationTab('mensSingles')">Men's Singles</button>
                 <button class="registration-tab" onclick="switchRegistrationTab('mensDoubles')">Men's Doubles</button>
                 <button class="registration-tab" onclick="switchRegistrationTab('womensSingles')">Women's Singles</button>
+                <button class="registration-tab" onclick="switchRegistrationTab('womensDoubles')">Women's Doubles</button>
+                <button class="registration-tab" onclick="switchRegistrationTab('mixedDoubles')">Mixed Doubles</button>
+            </div>
+            <div class="registrations-container" id="registrationsContainer">
+                <div class="loading-spinner" id="registrationsLoading" style="display: block;">
+                    <div class="spinner"></div>
+                    <p>Loading registrations...</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <section class="section" id="newsSection">
         <div class="content-container">
@@ -598,18 +612,6 @@
                     <div class="no-news-icon">📰</div>
                     <h2>No News Yet</h2>
                     <p>Stay tuned for tournament updates and announcements</p>
-                </div>
-            </div>
-            <button class="home-button" onclick="showSection('landing')" style="display: block; margin: 40px auto 0;">Back to Home</button>
-        </div>
-    </section>
-                <button class="registration-tab" onclick="switchRegistrationTab('womensDoubles')">Women's Doubles</button>
-                <button class="registration-tab" onclick="switchRegistrationTab('mixedDoubles')">Mixed Doubles</button>
-            </div>
-            <div class="registrations-container" id="registrationsContainer">
-                <div class="loading-spinner" id="registrationsLoading" style="display: block;">
-                    <div class="spinner"></div>
-                    <p>Loading registrations...</p>
                 </div>
             </div>
             <button class="home-button" onclick="showSection('landing')" style="display: block; margin: 40px auto 0;">Back to Home</button>

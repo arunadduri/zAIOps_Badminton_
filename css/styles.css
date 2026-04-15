@@ -2277,6 +2277,126 @@ html {
     color: rgba(255, 255, 255, 0.5);
 }
 
+/* Enhanced Page Header */
+.page-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.section-subtitle {
+    font-size: 18px;
+    color: var(--text-gray);
+    margin-top: -40px;
+    margin-bottom: 40px;
+    font-weight: 400;
+}
+
+/* Enhanced Search Box */
+.search-box-enhanced {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+}
+
+.search-icon-enhanced {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    opacity: 0.7;
+    z-index: 1;
+}
+
+.search-box-enhanced input {
+    width: 100%;
+    padding: 16px 24px 16px 56px;
+    background: rgba(26, 41, 66, 0.6);
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    border-radius: 50px;
+    color: var(--text-light);
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(15px);
+}
+
+.search-box-enhanced input:focus {
+    outline: none;
+    border-color: var(--primary-cyan);
+    background: rgba(26, 41, 66, 0.8);
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.4), 0 0 60px rgba(0, 212, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.search-box-enhanced input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Premium Empty State */
+.empty-state {
+    text-align: center;
+    padding: 80px 40px;
+    background: linear-gradient(135deg, rgba(26, 41, 66, 0.6), rgba(10, 22, 40, 0.6));
+    border-radius: 24px;
+    border: 2px dashed rgba(0, 212, 255, 0.3);
+    margin: 40px 0;
+    animation: fadeIn 0.5s ease;
+}
+
+.empty-state-icon {
+    font-size: 80px;
+    margin-bottom: 24px;
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.empty-state h2 {
+    font-size: 28px;
+    color: var(--text-light);
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+.empty-state p {
+    font-size: 18px;
+    color: var(--text-gray);
+    margin-bottom: 32px;
+    line-height: 1.6;
+}
+
+.empty-state-cta {
+    display: inline-block;
+    padding: 16px 40px;
+    background: linear-gradient(135deg, var(--primary-cyan), var(--primary-orange));
+    color: var(--dark-bg);
+    border: none;
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(0, 212, 255, 0.4);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.empty-state-cta:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 35px rgba(0, 212, 255, 0.6);
+}
+
+.empty-state-subtitle {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.6);
+    margin-top: 20px;
+}
+
 /* ========================================
    MODERN RULES PAGE STYLES
    ======================================== */

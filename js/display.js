@@ -343,7 +343,17 @@ function displayFilteredRegistrations() {
         section.appendChild(table);
         container.appendChild(section);
     } else {
-        container.innerHTML = '<p style="text-align: center; color: var(--text-gray); padding: 40px;">No registrations found for this category.</p>';
+        // Show premium empty state
+        const categoryName = categoryMap[categoryKey];
+        container.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-state-icon">🏸</div>
+                <h2>No registrations yet for ${categoryName}</h2>
+                <p>Be the first to register and secure your spot!</p>
+                <button class="empty-state-cta" onclick="showRegistrationForm()">Register Now</button>
+                <p class="empty-state-subtitle">Join the tournament and compete with the best</p>
+            </div>
+        `;
     }
 }
 // Made with Bob
