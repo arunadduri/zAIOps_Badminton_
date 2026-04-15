@@ -222,14 +222,6 @@ function formatRelativeTime(dateString) {
     return `<div class="time-display"><span class="relative-time">${relativeTime}</span><span class="exact-time">(${exactTime})</span></div>`;
 }
 
-// Helper function to get rank badge
-function getRankBadge(index) {
-    if (index === 0) return '<span class="rank-badge gold">🥇</span>';
-    if (index === 1) return '<span class="rank-badge silver">🥈</span>';
-    if (index === 2) return '<span class="rank-badge bronze">🥉</span>';
-    return '';
-}
-
 // Helper function to get last entry time
 function getLastEntryTime(registrations) {
     if (!registrations || registrations.length === 0) return 'No entries yet';
@@ -313,7 +305,6 @@ function displayFilteredRegistrations() {
         table.innerHTML = `
             <thead class="sticky-header">
                 <tr>
-                    <th class="col-rank">#</th>
                     <th class="col-name">Name</th>
                     <th class="col-email">Email</th>
                     ${hasPartner ? '<th class="col-partner">Partner Name</th><th class="col-partner-email">Partner Email</th>' : ''}
@@ -324,10 +315,6 @@ function displayFilteredRegistrations() {
             <tbody>
                 ${registrations.map((reg, index) => `
                     <tr class="table-row">
-                        <td class="col-rank">
-                            ${getRankBadge(index)}
-                            <span class="rank-number">${index + 1}</span>
-                        </td>
                         <td class="col-name">
                             <div class="player-info">
                                 <span class="player-avatar avatar-${index % 3}">${getInitials(reg.name)}</span>

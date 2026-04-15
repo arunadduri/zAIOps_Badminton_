@@ -783,7 +783,7 @@ html {
 .section {
     display: none;
     min-height: 100vh;
-    padding: 20px 20px 80px 20px;
+    padding: 120px 20px 80px 20px;
 }
 
 .section.active { display: block; }
@@ -1004,12 +1004,12 @@ html {
 }
 
 .registration-tab {
-    padding: 14px 28px;
+    padding: 16px 32px;
     background: transparent;
     border: none;
     border-radius: 50px;
-    color: var(--text-light);
-    font-size: 15px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 16px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1032,7 +1032,7 @@ html {
 }
 
 .registration-tab:hover {
-    color: var(--primary-cyan);
+    color: var(--text-light);
     transform: translateY(-2px);
 }
 
@@ -1836,7 +1836,7 @@ html {
 /* Enhanced Table Styles */
 .registrations-table thead.sticky-header {
     position: sticky;
-    top: 80px;
+    top: 140px;
     z-index: 10;
 }
 
