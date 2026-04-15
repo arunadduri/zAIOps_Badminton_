@@ -78,6 +78,20 @@ function loadGalleryImages() {
 
         imageElement.addEventListener('click', () => openLightbox(index));
 
+        galleryItem.addEventListener('mousemove', (e) => {
+            const rect = galleryItem.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const rotateX = (y / rect.height - 0.5) * 10;
+            const rotateY = (x / rect.width - 0.5) * -10;
+
+            galleryItem.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px) scale(1.03)`;
+        });
+
+        galleryItem.addEventListener('mouseleave', () => {
+            galleryItem.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1)';
+        });
+
         galleryItem.appendChild(imageElement);
         galleryGrid.appendChild(galleryItem);
     });

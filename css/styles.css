@@ -1,13 +1,31 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* Gallery image cursor */
-.gallery-item img {
+/* Premium Gallery Hover Preview */
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 16px;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    transform-style: preserve-3d;
+    will-change: transform;
 }
 
-.gallery-item img:hover {
-    transform: scale(1.02);
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.5s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.08);
+}
+
+.gallery-item:hover {
+    box-shadow: 0 0 25px rgba(0, 200, 255, 0.4);
+    transform: translateY(-5px);
 }
 
 /* Lightbox Styles */
@@ -1360,14 +1378,16 @@ html {
 }
 
 .gallery-item {
-    border-radius: var(--border-radius);
+    border-radius: 16px;
     overflow: hidden;
     cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
     position: relative;
     background: var(--card-bg);
     animation: fadeInUp 0.6s ease-out backwards;
+    transform-style: preserve-3d;
+    will-change: transform;
 }
 
 .gallery-item:nth-child(1) { animation-delay: 0.05s; }
@@ -1392,14 +1412,17 @@ html {
 }
 
 .gallery-item::after {
-    content: '🔍 View';
+    content: '🔍 View Photo';
     position: absolute;
-    bottom: 20px;
+    bottom: 15px;
     left: 50%;
     transform: translateX(-50%) translateY(20px);
     color: white;
-    font-size: 16px;
+    font-size: 12px;
     font-weight: 600;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 6px 14px;
+    border-radius: 20px;
     opacity: 0;
     transition: all 0.3s ease;
     z-index: 2;
@@ -1411,8 +1434,8 @@ html {
 }
 
 .gallery-item:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 15px 40px rgba(0, 212, 255, 0.3);
+    transform: translateY(-5px);
+    box-shadow: 0 0 25px rgba(0, 200, 255, 0.4);
 }
 
 .gallery-item img {
