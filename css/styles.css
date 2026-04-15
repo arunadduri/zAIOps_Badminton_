@@ -174,7 +174,10 @@ html {
 .nav-logo {
     display: flex;
     align-items: center;
-    gap: 15px;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    flex-shrink: 0;
     cursor: pointer;
     transition: var(--transition);
 }
@@ -184,9 +187,11 @@ html {
 }
 
 .nav-logo-img {
-    width: auto;
-    height: 40px;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1 / 1;
     object-fit: contain;
+    display: block;
     filter: drop-shadow(0 2px 8px rgba(0, 212, 255, 0.4));
     transition: all 0.3s ease;
 }
