@@ -39,23 +39,24 @@ const fallbackImages = [
     '81c7b00f-a8b0-4782-af30-a54fdfe053e2.jpg'
 ];
 
+// Gallery lightbox state
+let galleryImages = [];
+let currentLightboxIndex = 0;
+
 // Load gallery images dynamically from GitHub or fallback
 async function loadGalleryImages() {
     const galleryGrid = document.querySelector('#earlierGallery .gallery-grid');
     
     if (!galleryGrid) return;
     
-    // Show loading
     galleryGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-gray);">Loading images...</div>';
     
     let imageFiles = [];
     
     try {
-        // Try to fetch from GitHub API
         const response = await fetch('https://api.github.com/repos/arunadduri/zAIOps_Badminton_/contents/Photos');
         const files = await response.json();
         
-        // Filter image files
         imageFiles = files.filter(file =>
             file.type === 'file' &&
             /\.(jpg|jpeg|png|gif|webp)$/i.test(file.name) &&
@@ -72,97 +73,67 @@ async function loadGalleryImages() {
         galleryGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-gray);">No images found</div>';
         return;
     }
+
+    galleryImages = imageFiles.map(fileName => `Photos/${fileName}`);
     
-    // Add images with click to expand
     imageFiles.forEach((fileName, index) => {
         const galleryItem = document.createElement('div');
         galleryItem.className = 'gallery-item';
         const imgPath = `Photos/${fileName}`;
-        galleryItem.innerHTML = `<img src="${imgPath}" alt="Tournament Photo ${index + 1}" loading="lazy" data-gallery-src="${imgPath}" onclick="expandImage('${imgPath}')" onerror="this.parentElement.style.display='none'" style="cursor: pointer;">`;
+        galleryItem.innerHTML = `
+            <img src="${imgPath}" alt="Tournament Photo ${index + 1}" loading="lazy" data-index="${index}" onerror="this.parentElement.style.display='none'" style="cursor: pointer;">
+        `;
         galleryGrid.appendChild(galleryItem);
-    });
-}
 
-// Image lightbox/expand functionality
-let currentLightboxIndex = 0;
-let lightboxImages = [];
-
-function expandImage(src) {
-    const galleryImgs = document.querySelectorAll('#earlierGallery .gallery-item img');
-
-    if (galleryImgs.length === 0) {
-        return;
-    }
-
-    lightboxImages = Array.from(galleryImgs)
-        .map(img => img.dataset.gallerySrc || img.getAttribute('src'))
-        .filter(Boolean);
-
-    currentLightboxIndex = lightboxImages.indexOf(src);
-
-    if (currentLightboxIndex === -1) {
-        currentLightboxIndex = lightboxImages.findIndex(imagePath => imagePath.endsWith(src));
-    }
-
-    if (currentLightboxIndex === -1) {
-        return;
-    }
-
-    const existingLightbox = document.getElementById('imageLightbox');
-    if (existingLightbox) {
-        existingLightbox.remove();
-    }
-
-    const lightbox = document.createElement('div');
-    lightbox.className = 'lightbox';
-    lightbox.id = 'imageLightbox';
-    lightbox.innerHTML = `
-        <div class="lightbox-content">
-            <span class="lightbox-close" onclick="closeLightbox()" style="cursor: pointer;">&times;</span>
-            <button class="lightbox-arrow lightbox-arrow-left" onclick="navigateLightbox(-1)" style="cursor: pointer;" aria-label="Previous image">❮</button>
-            <img src="${lightboxImages[currentLightboxIndex]}" alt="Expanded Image" id="lightboxImage" style="max-width: 90vw; max-height: 90vh;">
-            <button class="lightbox-arrow lightbox-arrow-right" onclick="navigateLightbox(1)" style="cursor: pointer;" aria-label="Next image">❯</button>
-            <div class="lightbox-counter">${currentLightboxIndex + 1} / ${lightboxImages.length}</div>
-        </div>
-    `;
-    document.body.appendChild(lightbox);
-
-    lightbox.addEventListener('click', function(e) {
-        if (e.target === lightbox) {
-            closeLightbox();
+        const imageElement = galleryItem.querySelector('img');
+        if (imageElement) {
+            imageElement.addEventListener('click', () => openLightbox(index));
         }
     });
 }
 
-function navigateLightbox(direction) {
-    currentLightboxIndex = (currentLightboxIndex + direction + lightboxImages.length) % lightboxImages.length;
-    const lightboxImg = document.getElementById('lightboxImage');
-    const counter = document.querySelector('.lightbox-counter');
-    
-    if (lightboxImg) {
-        lightboxImg.style.opacity = '0';
-        setTimeout(() => {
-            lightboxImg.src = lightboxImages[currentLightboxIndex];
-            lightboxImg.style.opacity = '1';
-            if (counter) {
-                counter.textContent = `${currentLightboxIndex + 1} / ${lightboxImages.length}`;
-            }
-        }, 200);
-    }
+function openLightbox(index) {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+
+    if (!lightbox || !lightboxImg || galleryImages.length === 0) return;
+
+    currentLightboxIndex = index;
+    lightboxImg.src = galleryImages[currentLightboxIndex];
+    updateLightboxCounter();
+    lightbox.classList.add('active');
 }
 
 function closeLightbox() {
-    const lightbox = document.querySelector('.lightbox');
+    const lightbox = document.getElementById('lightbox');
     if (lightbox) {
-        lightbox.remove();
+        lightbox.classList.remove('active');
     }
 }
 
-// Close lightbox with Escape key and navigate with arrow keys
+function navigateLightbox(direction) {
+    if (galleryImages.length === 0) return;
+
+    currentLightboxIndex = (currentLightboxIndex + direction + galleryImages.length) % galleryImages.length;
+    const lightboxImg = document.getElementById('lightbox-img');
+
+    if (lightboxImg) {
+        lightboxImg.src = galleryImages[currentLightboxIndex];
+        updateLightboxCounter();
+    }
+}
+
+function updateLightboxCounter() {
+    const counter = document.getElementById('lightboxCounter');
+    if (counter && galleryImages.length > 0) {
+        counter.textContent = `${currentLightboxIndex + 1} / ${galleryImages.length}`;
+    }
+}
+
 document.addEventListener('keydown', function(e) {
-    const lightbox = document.getElementById('imageLightbox');
-    if (!lightbox) return;
-    
+    const lightbox = document.getElementById('lightbox');
+    if (!lightbox || !lightbox.classList.contains('active')) return;
+
     if (e.key === 'Escape') {
         closeLightbox();
     } else if (e.key === 'ArrowLeft') {
@@ -172,8 +143,18 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// Load when page loads
-document.addEventListener('DOMContentLoaded', loadGalleryImages);
+document.addEventListener('DOMContentLoaded', function() {
+    loadGalleryImages();
+
+    const lightbox = document.getElementById('lightbox');
+    if (lightbox) {
+        lightbox.addEventListener('click', function(e) {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+    }
+});
 
 
 // Registration tab switching

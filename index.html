@@ -302,6 +302,13 @@
                     <!-- Images will be loaded dynamically by display.js -->
                 </div>
             </div>
+            <div id="lightbox" class="lightbox">
+                <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+                <img class="lightbox-img" id="lightbox-img" alt="Expanded tournament image">
+                <div class="lightbox-arrow lightbox-arrow-left" onclick="navigateLightbox(-1)">&#10094;</div>
+                <div class="lightbox-arrow lightbox-arrow-right" onclick="navigateLightbox(1)">&#10095;</div>
+                <div class="lightbox-counter" id="lightboxCounter"></div>
+            </div>
             <div class="gallery-content" id="2026Gallery">
                 <div class="coming-soon">
                     <div class="coming-soon-icon">📷</div>
