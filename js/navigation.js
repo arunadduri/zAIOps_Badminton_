@@ -152,11 +152,37 @@ document.addEventListener('click', function(event) {
 
 // Gallery tab switching
 function switchGalleryTab(tab) {
-    document.querySelectorAll('.gallery-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.gallery-content').forEach(c => c.classList.remove('active'));
-    
-    event.target.classList.add('active');
-    document.getElementById(tab === 'earlier' ? 'earlierGallery' : '2026Gallery').classList.add('active');
+    const tabs = document.querySelectorAll('.gallery-tab');
+    const contents = document.querySelectorAll('.gallery-content');
+    const targetId = tab === 'earlier' ? 'earlierGallery' : '2026Gallery';
+    const targetPanel = document.getElementById(targetId);
+
+    tabs.forEach(t => t.classList.remove('active'));
+    contents.forEach(c => c.classList.remove('active'));
+
+    if (typeof event !== 'undefined' && event && event.target) {
+        event.target.classList.add('active');
+    } else {
+        const matchingTab = Array.from(tabs).find(t => t.textContent.toLowerCase().includes(tab.toLowerCase()));
+        if (matchingTab) {
+            matchingTab.classList.add('active');
+        }
+    }
+
+    if (targetPanel) {
+        targetPanel.classList.add('active');
+        return;
+    }
+
+    const fallbackPanel = document.getElementById('earlierGallery');
+    if (fallbackPanel) {
+        fallbackPanel.classList.add('active');
+        const earlierTab = Array.from(tabs).find(t => t.textContent.toLowerCase().includes('earlier'));
+        tabs.forEach(t => t.classList.remove('active'));
+        if (earlierTab) {
+            earlierTab.classList.add('active');
+        }
+    }
 }
 
 // Mobile menu toggle

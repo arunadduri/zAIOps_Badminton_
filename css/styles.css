@@ -150,7 +150,7 @@ html {
     top: 8px;
     left: 32px;
     right: 32px;
-    height: 112px;
+    min-height: 112px;
     background:
         radial-gradient(circle at center, rgba(255, 255, 255, 0.14), transparent 24%),
         linear-gradient(90deg, rgba(19, 88, 112, 0.9) 0%, rgba(6, 19, 67, 0.96) 38%, rgba(3, 22, 61, 0.98) 68%, rgba(53, 42, 74, 0.9) 100%);
@@ -159,7 +159,7 @@ html {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 44px;
+    padding: 0 30px;
     z-index: 1002;
     box-shadow:
         0 16px 40px rgba(3, 16, 43, 0.32),
@@ -184,7 +184,7 @@ html {
 .nav-logo {
     display: flex;
     align-items: center;
-    gap: 22px;
+    gap: 16px;
     flex-shrink: 0;
     cursor: pointer;
     transition: var(--transition);
@@ -195,8 +195,8 @@ html {
 }
 
 .nav-logo-img {
-    width: 78px;
-    height: 78px;
+    width: 64px;
+    height: 64px;
     aspect-ratio: 1 / 1;
     object-fit: contain;
     display: block;
@@ -212,7 +212,7 @@ html {
 
 .nav-brand-title {
     font-family: 'Inter', sans-serif;
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 800;
     line-height: 1;
     color: #ffffff;
@@ -220,7 +220,7 @@ html {
 
 .nav-brand-subtitle {
     font-family: 'Inter', sans-serif;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 500;
     line-height: 1;
     letter-spacing: 0.08em;
@@ -235,13 +235,13 @@ html {
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 56px;
+    gap: 28px;
     list-style: none;
 }
 
 .nav-links li a {
     font-family: 'Inter', sans-serif;
-    font-size: 19px;
+    font-size: 17px;
     font-weight: 700;
     color: rgba(255, 255, 255, 0.96);
     text-decoration: none;
@@ -275,7 +275,7 @@ html {
 .nav-links li a.nav-cta {
     background: linear-gradient(135deg, #2fd4ff, #ff9a33);
     color: #041625;
-    padding: 18px 34px;
+    padding: 16px 24px;
     border-radius: 32px;
     font-weight: 800;
     box-shadow: 0 12px 28px rgba(0, 212, 255, 0.24);
@@ -1882,15 +1882,15 @@ html {
 /* Enhanced Responsive Design */
 @media (max-width: 1024px) {
     .main-nav {
-        padding: 0 30px;
+        padding: 0 24px;
     }
     
     .nav-links {
-        gap: 25px;
+        gap: 18px;
     }
     
     .nav-links li a {
-        font-size: 15px;
+        font-size: 14px;
     }
     
     .hero-title {

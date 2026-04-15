@@ -31,7 +31,7 @@ async function loadAllRegistrations() {
     }
 }
 
-// Fallback image list for local viewing
+// Local gallery image list
 const fallbackImages = [
     'IMG_4687.jpg',
     'IMG_4101.jpg',
@@ -43,52 +43,43 @@ const fallbackImages = [
 let galleryImages = [];
 let currentLightboxIndex = 0;
 
-// Load gallery images dynamically from GitHub or fallback
-async function loadGalleryImages() {
+// Load gallery images from local Photos directory
+function loadGalleryImages() {
     const galleryGrid = document.querySelector('#earlierGallery .gallery-grid');
     
     if (!galleryGrid) return;
     
-    galleryGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-gray);">Loading images...</div>';
-    
-    let imageFiles = [];
-    
-    try {
-        const response = await fetch('https://api.github.com/repos/arunadduri/zAIOps_Badminton_/contents/Photos');
-        const files = await response.json();
-        
-        imageFiles = files.filter(file =>
-            file.type === 'file' &&
-            /\.(jpg|jpeg|png|gif|webp)$/i.test(file.name) &&
-            file.name !== '.gitkeep'
-        ).map(file => file.name);
-    } catch (error) {
-        console.log('Using fallback images for local viewing');
-        imageFiles = fallbackImages;
-    }
-    
     galleryGrid.innerHTML = '';
     
-    if (imageFiles.length === 0) {
+    if (fallbackImages.length === 0) {
         galleryGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-gray);">No images found</div>';
+        galleryImages = [];
         return;
     }
 
-    galleryImages = imageFiles.map(fileName => `Photos/${fileName}`);
+    galleryImages = fallbackImages.map(fileName => `Photos/${fileName}`);
     
-    imageFiles.forEach((fileName, index) => {
+    fallbackImages.forEach((fileName, index) => {
         const galleryItem = document.createElement('div');
         galleryItem.className = 'gallery-item';
-        const imgPath = `Photos/${fileName}`;
-        galleryItem.innerHTML = `
-            <img src="${imgPath}" alt="Tournament Photo ${index + 1}" loading="lazy" data-index="${index}" onerror="this.parentElement.style.display='none'" style="cursor: pointer;">
-        `;
-        galleryGrid.appendChild(galleryItem);
+        galleryItem.setAttribute('onclick', `openLightbox(${index})`);
 
-        const imageElement = galleryItem.querySelector('img');
-        if (imageElement) {
-            imageElement.addEventListener('click', () => openLightbox(index));
-        }
+        const imageElement = document.createElement('img');
+        imageElement.src = `Photos/${fileName}`;
+        imageElement.alt = `Tournament Photo ${index + 1}`;
+        imageElement.loading = 'lazy';
+        imageElement.dataset.index = String(index);
+        imageElement.style.cursor = 'pointer';
+        imageElement.setAttribute('onclick', `openLightbox(${index})`);
+
+        imageElement.onerror = function() {
+            this.parentElement.style.display = 'none';
+        };
+
+        imageElement.addEventListener('click', () => openLightbox(index));
+
+        galleryItem.appendChild(imageElement);
+        galleryGrid.appendChild(galleryItem);
     });
 }
 
@@ -98,17 +89,21 @@ function openLightbox(index) {
 
     if (!lightbox || !lightboxImg || galleryImages.length === 0) return;
 
-    currentLightboxIndex = index;
+    currentLightboxIndex = Math.max(0, Math.min(index, galleryImages.length - 1));
     lightboxImg.src = galleryImages[currentLightboxIndex];
     updateLightboxCounter();
+    lightbox.style.display = 'flex';
     lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden';
 }
 
 function closeLightbox() {
     const lightbox = document.getElementById('lightbox');
     if (lightbox) {
         lightbox.classList.remove('active');
+        lightbox.style.display = 'none';
     }
+    document.body.style.overflow = '';
 }
 
 function navigateLightbox(direction) {
