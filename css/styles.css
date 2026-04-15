@@ -1835,8 +1835,7 @@ html {
 
 /* Enhanced Table Styles */
 .registrations-table thead.sticky-header {
-    position: sticky;
-    top: 140px;
+    position: relative;
     z-index: 10;
 }
 
