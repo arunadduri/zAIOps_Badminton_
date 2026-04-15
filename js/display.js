@@ -16,7 +16,11 @@ async function loadAllRegistrations() {
         
         // Store data globally for tab filtering
         allRegistrationsData = registrations || [];
-        currentRegistrationTab = 'all';
+        
+        // Set default tab to Men's Singles if not already set
+        if (!currentRegistrationTab || currentRegistrationTab === 'all') {
+            currentRegistrationTab = 'mensSingles';
+        }
         
         // Display with current filter
         displayFilteredRegistrations();
@@ -162,11 +166,21 @@ function switchRegistrationTab(tab) {
     
     // Update tab buttons
     document.querySelectorAll('.registration-tab').forEach(t => t.classList.remove('active'));
-    event.target.classList.add('active');
+    if (event && event.target) {
+        event.target.classList.add('active');
+    }
     
     // Filter and display registrations
     displayFilteredRegistrations();
 }
+
+// Initialize first tab as active on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const firstTab = document.querySelector('.registration-tab');
+    if (firstTab) {
+        firstTab.classList.add('active');
+    }
+});
 
 // Helper function to get initials
 function getInitials(name) {
