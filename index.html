@@ -26,7 +26,6 @@
     <nav class="main-nav">
         <div class="nav-logo">
             <img src="Logo/Image1.png" alt="zAIOps Logo" class="nav-logo-img">
-            <span class="nav-logo-text">zAIOps Tournament</span>
         </div>
         <ul class="nav-links">
             <li><a href="#" onclick="showSection('landing')">Home</a></li>
@@ -448,6 +447,15 @@
     <section class="section" id="registrationsSection">
         <div class="content-container">
             <h1 class="section-title">All Registrations</h1>
+            
+            <!-- Search and Filter Bar -->
+            <div class="search-filter-bar">
+                <div class="search-box">
+                    <span class="search-icon">🔍</span>
+                    <input type="text" id="playerSearchInput" placeholder="Search by name or email..." onkeyup="filterRegistrations(this.value)">
+                </div>
+            </div>
+            
             <div class="registration-tabs">
                 <button class="registration-tab active" onclick="switchRegistrationTab('mensSingles')">Men's Singles</button>
                 <button class="registration-tab" onclick="switchRegistrationTab('mensDoubles')">Men's Doubles</button>

@@ -291,23 +291,15 @@ function displayFilteredRegistrations() {
         header.className = 'category-header-enhanced';
         const teamLabel = categoryKey.includes('Doubles') ? 'Teams' : 'Players';
         header.innerHTML = `
-            <div class="header-main">
-                <h3>${categoryMap[categoryKey]}</h3>
-                <div class="header-stats">
-                    <span class="stat-item">
-                        <span class="stat-icon">👥</span>
-                        <span class="stat-value">${count}</span> ${teamLabel} Registered
-                    </span>
+            <div class="header-content">
+                <div class="header-title">
+                    <h2>${categoryMap[categoryKey]}</h2>
+                    <span class="player-count-badge">${count} ${teamLabel}</span>
+                </div>
+                <div class="header-stats-compact">
+                    <span class="stat-text"><strong>${count}</strong> ${teamLabel}</span>
                     <span class="stat-separator">•</span>
-                    <span class="stat-item">
-                        <span class="stat-icon">⏱️</span>
-                        Last entry: <span class="stat-value">${lastEntry}</span>
-                    </span>
-                    <span class="stat-separator">•</span>
-                    <span class="stat-item ${slotsLeft <= 3 ? 'stat-warning' : ''}">
-                        <span class="stat-icon">🎯</span>
-                        Slots left: <span class="stat-value">${slotsLeft}</span>
-                    </span>
+                    <span class="stat-text">Last entry <strong>${lastEntry}</strong></span>
                 </div>
             </div>
         `;
@@ -368,3 +360,25 @@ function displayFilteredRegistrations() {
     }
 }
 // Made with Bob
+
+// Filter registrations by search term
+function filterRegistrations(searchTerm) {
+    const rows = document.querySelectorAll('.registrations-table tbody tr.table-row');
+    const term = searchTerm.toLowerCase().trim();
+    
+    rows.forEach(row => {
+        const name = row.querySelector('.player-name')?.textContent.toLowerCase() || '';
+        const email = row.querySelector('.col-email')?.textContent.toLowerCase() || '';
+        const partnerName = row.querySelector('.col-partner .player-name')?.textContent.toLowerCase() || '';
+        const partnerEmail = row.querySelector('.col-partner-email')?.textContent.toLowerCase() || '';
+        
+        const matches = name.includes(term) || email.includes(term) || 
+                       partnerName.includes(term) || partnerEmail.includes(term);
+        
+        if (matches || term === '') {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+}
