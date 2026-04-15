@@ -313,7 +313,6 @@ function displayFilteredRegistrations() {
         table.innerHTML = `
             <thead class="sticky-header">
                 <tr>
-                    <th class="col-rank">#</th>
                     <th class="col-name">Name</th>
                     <th class="col-email">Email</th>
                     ${hasPartner ? '<th class="col-partner">Partner Name</th><th class="col-partner-email">Partner Email</th>' : ''}
@@ -324,10 +323,6 @@ function displayFilteredRegistrations() {
             <tbody>
                 ${registrations.map((reg, index) => `
                     <tr class="table-row">
-                        <td class="col-rank">
-                            ${getRankBadge(index)}
-                            <span class="rank-number">${index + 1}</span>
-                        </td>
                         <td class="col-name">
                             <div class="player-info">
                                 <span class="player-avatar avatar-${index % 3}">${getInitials(reg.name)}</span>
