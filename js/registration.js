@@ -281,8 +281,22 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Show success overlay
             if (successful.length > 0) {
-                document.getElementById('registeredCategories').innerHTML = 
-                    successful.map(cat => `<div>✓ ${cat}</div>`).join('');
+                // Format categories
+                document.getElementById('registeredCategories').innerHTML =
+                    successful.map(cat => cat).join(' • ');
+                
+                // Add registration info with timestamp
+                const now = new Date();
+                const timestamp = now.toLocaleString('en-IN', {
+                    day: 'numeric',
+                    month: 'short',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                
+                document.getElementById('registrationInfo').innerHTML =
+                    `Registered on: ${timestamp}`;
+                
                 document.getElementById('successOverlay').classList.add('show');
             }
             
