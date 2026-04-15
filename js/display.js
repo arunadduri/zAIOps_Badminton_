@@ -77,7 +77,8 @@ async function loadGalleryImages() {
     imageFiles.forEach((fileName, index) => {
         const galleryItem = document.createElement('div');
         galleryItem.className = 'gallery-item';
-        galleryItem.innerHTML = `<img src="Photos/${fileName}" alt="Tournament Photo ${index + 1}" loading="lazy" onclick="expandImage(this.src)" onerror="this.parentElement.style.display='none'">`;
+        const imgPath = `Photos/${fileName}`;
+        galleryItem.innerHTML = `<img src="${imgPath}" alt="Tournament Photo ${index + 1}" loading="lazy" onclick="expandImage('${imgPath}')" onerror="this.parentElement.style.display='none'" style="cursor: pointer;">`;
         galleryGrid.appendChild(galleryItem);
     });
 }
@@ -87,25 +88,48 @@ let currentLightboxIndex = 0;
 let lightboxImages = [];
 
 function expandImage(src) {
+    console.log("expandImage called with src:", src);
+
     // Get all gallery images
     const galleryImgs = document.querySelectorAll('#earlierGallery .gallery-item img');
+    console.log("Found gallery images:", galleryImgs.length);
+
+    if (galleryImgs.length === 0) {
+        console.error("No gallery images found!");
+        return;
+    }
+
     lightboxImages = Array.from(galleryImgs).map(img => img.src);
     currentLightboxIndex = lightboxImages.indexOf(src);
-    
+    console.log("Current index:", currentLightboxIndex, "Total images:", lightboxImages.length);
+
+    if (currentLightboxIndex === -1) {
+        console.error("Image not found in gallery!");
+        return;
+    }
+
     // Create lightbox overlay
     const lightbox = document.createElement('div');
     lightbox.className = 'lightbox';
     lightbox.id = 'imageLightbox';
     lightbox.innerHTML = `
         <div class="lightbox-content">
-            <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
-            <button class="lightbox-arrow lightbox-arrow-left" onclick="navigateLightbox(-1)">❮</button>
-            <img src="${src}" alt="Expanded Image" id="lightboxImage">
-            <button class="lightbox-arrow lightbox-arrow-right" onclick="navigateLightbox(1)">❯</button>
+            <span class="lightbox-close" onclick="closeLightbox()" style="cursor: pointer;">&times;</span>
+            <button class="lightbox-arrow lightbox-arrow-left" onclick="navigateLightbox(-1)" style="cursor: pointer;">❮</button>
+            <img src="${src}" alt="Expanded Image" id="lightboxImage" style="max-width: 90vw; max-height: 90vh; cursor: pointer;">
+            <button class="lightbox-arrow lightbox-arrow-right" onclick="navigateLightbox(1)" style="cursor: pointer;">❯</button>
             <div class="lightbox-counter">${currentLightboxIndex + 1} / ${lightboxImages.length}</div>
         </div>
     `;
     document.body.appendChild(lightbox);
+
+    // Add click event to the lightbox image to close
+    const lightboxImg = lightbox.querySelector('#lightboxImage');
+    if (lightboxImg) {
+        lightboxImg.addEventListener('click', function() {
+            closeLightbox();
+        });
+    }
     
     // Close on click outside image
     lightbox.addEventListener('click', function(e) {

@@ -1,5 +1,15 @@
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
+/* Gallery image cursor */
+.gallery-item img {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.gallery-item img:hover {
+    transform: scale(1.02);
+}
+
 /* Lightbox Styles */
 .lightbox {
     position: fixed;
