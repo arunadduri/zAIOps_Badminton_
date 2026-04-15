@@ -168,6 +168,41 @@ function switchRegistrationTab(tab) {
     displayFilteredRegistrations();
 }
 
+// Helper function to get initials
+function getInitials(name) {
+    return name
+        .split(' ')
+        .map(word => word[0])
+        .join('')
+        .toUpperCase()
+        .substring(0, 2);
+}
+
+// Helper function to format relative time
+function formatRelativeTime(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffMins = Math.floor(diffMs / 60000);
+    const diffHours = Math.floor(diffMs / 3600000);
+    const diffDays = Math.floor(diffMs / 86400000);
+    
+    if (diffMins < 60) {
+        return diffMins <= 1 ? 'Just now' : `${diffMins} mins ago`;
+    } else if (diffHours < 24) {
+        return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+    } else if (diffDays < 7) {
+        return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+    } else {
+        return date.toLocaleDateString('en-IN', {
+            month: 'short',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    }
+}
+
 function displayFilteredRegistrations() {
     const container = document.getElementById('registrationsContainer');
     
@@ -207,7 +242,15 @@ function displayFilteredRegistrations() {
         
         const header = document.createElement('div');
         header.className = 'category-header';
-        header.innerHTML = `<h3>${categoryMap[categoryKey]} (${groupedByCategory[categoryKey].length})</h3>`;
+        const teamCount = categoryKey.includes('Doubles') ?
+            `${groupedByCategory[categoryKey].length} Teams Registered` :
+            `${groupedByCategory[categoryKey].length} Players Registered`;
+        header.innerHTML = `
+            <div>
+                <h3>${categoryMap[categoryKey]}</h3>
+                <div class="team-count">${teamCount}</div>
+            </div>
+        `;
         section.appendChild(header);
         
         const table = document.createElement('table');
@@ -222,23 +265,26 @@ function displayFilteredRegistrations() {
                     <th>Name</th>
                     <th>Email</th>
                     ${hasPartner ? '<th>Partner Name</th><th>Partner Email</th>' : ''}
-                    <th>Registered On</th>
+                    <th>Registered</th>
                 </tr>
             </thead>
             <tbody>
                 ${groupedByCategory[categoryKey].map((reg, index) => `
                     <tr>
                         <td>${index + 1}</td>
-                        <td>${reg.name}</td>
+                        <td>
+                            <span class="player-avatar">${getInitials(reg.name)}</span>
+                            ${reg.name}
+                        </td>
                         <td>${reg.email}</td>
-                        ${hasPartner ? `<td>${reg.partner_name || '-'}</td><td>${reg.partner_email || '-'}</td>` : ''}
-                        <td>${new Date(reg.created_at).toLocaleDateString('en-IN', {
-                            year: 'numeric',
-                            month: 'short',
-                            day: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        })}</td>
+                        ${hasPartner ? `
+                            <td>
+                                <span class="player-avatar">${getInitials(reg.partner_name || 'NA')}</span>
+                                ${reg.partner_name || '-'}
+                            </td>
+                            <td>${reg.partner_email || '-'}</td>
+                        ` : ''}
+                        <td>${formatRelativeTime(reg.created_at)}</td>
                     </tr>
                 `).join('')}
             </tbody>

@@ -67,6 +67,12 @@ function toggleSidebar() {
 function showSection(sectionName) {
     document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
     
+    // Close mobile menu if open
+    const navLinks = document.querySelector('.nav-links');
+    if (navLinks) {
+        navLinks.classList.remove('active');
+    }
+    
     if (sectionName === 'landing') {
         document.getElementById('landingSection').classList.add('active');
         document.getElementById('lookingForSection').classList.add('active');
@@ -80,15 +86,21 @@ function showSection(sectionName) {
     }
     
     document.getElementById('sidebar').classList.remove('active');
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // Show registration form
 function showRegistrationForm() {
+    // Close mobile menu if open
+    const navLinks = document.querySelector('.nav-links');
+    if (navLinks) {
+        navLinks.classList.remove('active');
+    }
+    
     document.getElementById('landingSection').classList.remove('active');
     document.getElementById('lookingForSection').classList.remove('active');
     document.getElementById('registrationSection').classList.add('active');
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 // Back to landing page
@@ -146,5 +158,56 @@ function switchGalleryTab(tab) {
     event.target.classList.add('active');
     document.getElementById(tab === 'earlier' ? 'earlierGallery' : '2026Gallery').classList.add('active');
 }
+
+// Mobile menu toggle
+function toggleMobileMenu() {
+    const navLinks = document.querySelector('.nav-links');
+    navLinks.classList.toggle('active');
+}
+
+// Live counter functionality
+async function updateLiveCounter() {
+    try {
+        const { data: registrations, error } = await supabaseClient
+            .from('registrations')
+            .select('email', { count: 'exact' });
+        
+        if (!error && registrations) {
+            // Count unique players
+            const uniquePlayers = new Set(registrations.map(r => r.email)).size;
+            const playerCountEl = document.getElementById('playerCount');
+            if (playerCountEl) {
+                playerCountEl.textContent = uniquePlayers;
+            }
+        }
+    } catch (error) {
+        console.log('Counter update error:', error);
+    }
+}
+
+// Countdown timer
+function updateCountdown() {
+    const tournamentDate = new Date('2026-05-01T09:00:00+05:30'); // Adjust date as needed
+    const now = new Date();
+    const diff = tournamentDate - now;
+    
+    if (diff > 0) {
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        
+        const countdownEl = document.getElementById('countdown');
+        if (countdownEl) {
+            countdownEl.textContent = `${days} days ${hours} hours`;
+        }
+    }
+}
+
+// Initialize counters
+window.addEventListener('DOMContentLoaded', () => {
+    updateLiveCounter();
+    updateCountdown();
+    setInterval(updateLiveCounter, 30000); // Update every 30 seconds
+    setInterval(updateCountdown, 60000); // Update every minute
+});
 
 // Made with Bob

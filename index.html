@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>zAIOps Badminton Tournament 2026</title>
+    <link rel="icon" href="Logo/Image1.png" type="image/png">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.min.js"></script>
 </head>
@@ -17,12 +22,29 @@
         </div>
     </div>
     
+    <!-- Enhanced Navigation Bar -->
+    <nav class="main-nav">
+        <div class="nav-logo">
+            <img src="Logo/Image1.png" alt="zAIOps Logo" class="nav-logo-img">
+            <span class="nav-logo-text">zAIOps Tournament</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#" onclick="showSection('landing')">Home</a></li>
+            <li><a href="#" onclick="showSection('about')">About</a></li>
+            <li><a href="#" onclick="showSection('fixtures')">Schedule</a></li>
+            <li><a href="#" onclick="showSection('registrations')">Registrations</a></li>
+            <li><a href="#" onclick="showRegistrationForm()" class="nav-cta">Register Now →</a></li>
+        </ul>
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">☰</button>
+    </nav>
+
     <div class="sidebar" id="sidebar">
         <div class="sidebar-logo">
             <h2>zAIOps Tournament</h2>
         </div>
         <ul class="sidebar-nav">
             <li><a href="#" onclick="showSection('landing')">🏠 Home</a></li>
+            <li><a href="#" onclick="showSection('about')">ℹ️ About</a></li>
             <li><a href="#" onclick="showSection('rules')">📋 Rules</a></li>
             <li><a href="#" onclick="showSection('gallery')">📸 Gallery</a></li>
             <li><a href="#" onclick="showSection('registrations')">👥 Registrations</a></li>
@@ -38,9 +60,19 @@
             <div class="hero-slide active" style="background-image: url('Photos/81c7b00f-a8b0-4782-af30-a54fdfe053e2.jpg');">
                 <div class="hero-overlay"></div>
                 <div class="hero-content">
+                    <div class="live-counter">
+                        <span class="counter-icon">🏸</span>
+                        <span id="playerCount">Loading...</span> Players Registered
+                        <span class="counter-separator">•</span>
+                        <span class="counter-icon">⏳</span>
+                        Tournament starts in <span id="countdown">calculating...</span>
+                    </div>
                     <h1 class="hero-title">zAIOps Badminton Tournament 2026</h1>
                     <p class="hero-subtitle">Join us for an exciting badminton tournament</p>
-                    <button class="hero-register-btn" onclick="showRegistrationForm()">Register Now</button>
+                    <button class="hero-register-btn" onclick="showRegistrationForm()">
+                        <span>Register Now</span>
+                        <span class="btn-icon">🏸</span>
+                    </button>
                 </div>
             </div>
             <div class="hero-slide" style="background-image: url('Photos/IMG_4687.jpg');">
@@ -48,7 +80,10 @@
                 <div class="hero-content">
                     <h1 class="hero-title">Compete with the Best</h1>
                     <p class="hero-subtitle">Show your skills on the court</p>
-                    <button class="hero-register-btn" onclick="showRegistrationForm()">Register Now</button>
+                    <button class="hero-register-btn" onclick="showRegistrationForm()">
+                        <span>Register Now</span>
+                        <span class="btn-icon">🏸</span>
+                    </button>
                 </div>
             </div>
             <div class="hero-slide" style="background-image: url('Photos/IMG_4101.jpg');">
@@ -56,7 +91,10 @@
                 <div class="hero-content">
                     <h1 class="hero-title">Experience the Thrill</h1>
                     <p class="hero-subtitle">Be part of something amazing</p>
-                    <button class="hero-register-btn" onclick="showRegistrationForm()">Register Now</button>
+                    <button class="hero-register-btn" onclick="showRegistrationForm()">
+                        <span>Register Now</span>
+                        <span class="btn-icon">🏸</span>
+                    </button>
                 </div>
             </div>
             <div class="hero-slide" style="background-image: url('Photos/IMG_4105.jpg');">
@@ -64,7 +102,10 @@
                 <div class="hero-content">
                     <h1 class="hero-title">Join the Action</h1>
                     <p class="hero-subtitle">Register now and be part of the tournament</p>
-                    <button class="hero-register-btn" onclick="showRegistrationForm()">Register Now</button>
+                    <button class="hero-register-btn" onclick="showRegistrationForm()">
+                        <span>Register Now</span>
+                        <span class="btn-icon">🏸</span>
+                    </button>
                 </div>
             </div>
             
@@ -84,6 +125,7 @@
 
     <section class="section looking-for-section active" id="lookingForSection">
         <h2 class="section-title">What are you looking for?</h2>
+        <p class="section-subtitle">Explore tournament stats, rules, and player registrations</p>
         <div class="options-grid">
             <div class="option-card" onclick="showSection('fixtures')">
                 <div class="option-icon">📅</div>
@@ -110,6 +152,36 @@
                 <h3>All Registrations</h3>
                 <p>View registered players</p>
             </div>
+        </div>
+    </section>
+
+    <!-- New About Section -->
+    <section class="section" id="aboutSection">
+        <div class="content-container">
+            <h1 class="section-title">About the Tournament</h1>
+            <div class="about-content">
+                <div class="about-card">
+                    <div class="about-icon">🏆</div>
+                    <h3>Premier Event</h3>
+                    <p>The zAIOps Badminton Tournament is the premier sporting event bringing together badminton enthusiasts from across the organization.</p>
+                </div>
+                <div class="about-card">
+                    <div class="about-icon">🎯</div>
+                    <h3>Multiple Categories</h3>
+                    <p>Compete in Men's Singles, Women's Singles, Men's Doubles, Women's Doubles, and Mixed Doubles categories.</p>
+                </div>
+                <div class="about-card">
+                    <div class="about-icon">⚡</div>
+                    <h3>Knockout Format</h3>
+                    <p>Fast-paced knockout tournament format following BWF standards with best of 3 games to 21 points.</p>
+                </div>
+                <div class="about-card">
+                    <div class="about-icon">🤝</div>
+                    <h3>Team Spirit</h3>
+                    <p>Build connections, showcase talent, and experience the thrill of competitive badminton in a professional setting.</p>
+                </div>
+            </div>
+            <button class="home-button" onclick="showSection('landing')" style="display: block; margin: 40px auto 0;">Back to Home</button>
         </div>
     </section>
 
