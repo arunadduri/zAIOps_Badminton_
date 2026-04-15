@@ -301,144 +301,250 @@
 
     <section class="section" id="rulesSection">
         <div class="content-container">
-            <h1 class="section-title">Tournament Rules</h1>
-            <div class="rules-content">
-                <h2>🏸 BADMINTON TOURNAMENT RULES (KNOCKOUT FORMAT)</h2>
-                <p style="text-align: center; color: var(--text-gray); margin-bottom: 30px;">Based on Badminton World Federation standards</p>
+            <!-- Modern Title Section -->
+            <div class="rules-header">
+                <h1 class="rules-main-title">Badminton Tournament Rules</h1>
+                <p class="rules-subtitle">Knockout Format • BWF Standards</p>
+            </div>
+
+            <!-- Quick Navigation -->
+            <div class="rules-nav">
+                <a href="#format" class="rules-nav-link">🏆 Format</a>
+                <a href="#scoring" class="rules-nav-link">🎯 Scoring</a>
+                <a href="#categories" class="rules-nav-link">👥 Categories</a>
+                <a href="#court" class="rules-nav-link">📏 Court</a>
+                <a href="#service" class="rules-nav-link">🏸 Service</a>
+                <a href="#gameplay" class="rules-nav-link">⚡ Gameplay</a>
+            </div>
+
+            <!-- Card-Based Rules Content -->
+            <div class="rules-grid">
                 
-                <h3>1️⃣ TOURNAMENT FORMAT</h3>
-                <ul>
-                    <li><strong>Type:</strong> Knockout (Elimination)</li>
-                    <li>Lose → eliminated</li>
-                    <li>Winner advances to next round</li>
-                </ul>
+                <!-- Tournament Format Card -->
+                <div class="rule-card" id="format">
+                    <div class="rule-card-header">
+                        <span class="rule-icon">🏆</span>
+                        <h2>Tournament Format</h2>
+                    </div>
+                    <div class="rule-card-body">
+                        <div class="rule-highlight">
+                            <span class="highlight-badge">Knockout</span>
+                            <span class="highlight-text">Single Elimination</span>
+                        </div>
+                        <ul class="rule-list">
+                            <li><span class="list-icon">→</span> Lose once = Eliminated</li>
+                            <li><span class="list-icon">→</span> Winner advances to next round</li>
+                            <li><span class="list-icon">→</span> No second chances</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Match Format & Scoring Card -->
+                <div class="rule-card" id="scoring">
+                    <div class="rule-card-header">
+                        <span class="rule-icon">🎯</span>
+                        <h2>Match Format & Scoring</h2>
+                    </div>
+                    <div class="rule-card-body">
+                        <div class="rule-highlight">
+                            <span class="highlight-badge">Best of 3</span>
+                            <span class="highlight-text">Rally Scoring</span>
+                        </div>
+                        <ul class="rule-list">
+                            <li><span class="list-icon">→</span> Each game to 21 points</li>
+                            <li><span class="list-icon">→</span> Point on every rally</li>
+                        </ul>
+                        <div class="key-rules">
+                            <div class="key-rule-item">
+                                <span class="key-icon">🔥</span>
+                                <strong>Must win by 2 points</strong>
+                            </div>
+                            <div class="key-rule-item">
+                                <span class="key-icon">⚡</span>
+                                <strong>At 20-20: Play continues until 2-point lead</strong>
+                            </div>
+                            <div class="key-rule-item">
+                                <span class="key-icon">🏁</span>
+                                <strong>Maximum cap: 30 points (30-29 wins)</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Categories Card -->
+                <div class="rule-card" id="categories">
+                    <div class="rule-card-header">
+                        <span class="rule-icon">👥</span>
+                        <h2>Tournament Categories</h2>
+                    </div>
+                    <div class="rule-card-body">
+                        <div class="categories-grid">
+                            <div class="category-item">
+                                <span class="category-icon">👨</span>
+                                <span class="category-name">Men's Singles</span>
+                                <span class="category-format">1 vs 1</span>
+                            </div>
+                            <div class="category-item">
+                                <span class="category-icon">👩</span>
+                                <span class="category-name">Women's Singles</span>
+                                <span class="category-format">1 vs 1</span>
+                            </div>
+                            <div class="category-item">
+                                <span class="category-icon">👨👨</span>
+                                <span class="category-name">Men's Doubles</span>
+                                <span class="category-format">2 vs 2</span>
+                            </div>
+                            <div class="category-item">
+                                <span class="category-icon">👩👩</span>
+                                <span class="category-name">Women's Doubles</span>
+                                <span class="category-format">2 vs 2</span>
+                            </div>
+                            <div class="category-item">
+                                <span class="category-icon">👨👩</span>
+                                <span class="category-name">Mixed Doubles</span>
+                                <span class="category-format">2 vs 2</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
-                <h3>2️⃣ MATCH FORMAT</h3>
-                <ul>
-                    <li>Match = Best of 3 games</li>
-                    <li>Each game = 21 points</li>
-                    <li>Rally scoring system</li>
-                </ul>
-                <p><strong>Winning Rules:</strong></p>
-                <ul>
-                    <li>First to 21 points</li>
-                    <li>Must win by 2 points</li>
-                    <li>At 20–20 → continue until 2-point lead</li>
-                    <li>Max cap = 30 points (30–29)</li>
-                </ul>
-                
-                <h3>3️⃣ CATEGORIES (ALL 5 FORMATS)</h3>
-                <ul>
-                    <li>👨 Men Singles (1 vs 1)</li>
-                    <li>👩 Women Singles (1 vs 1)</li>
-                    <li>👨👨 Men Doubles (2 vs 2)</li>
-                    <li>👩👩 Women Doubles (2 vs 2)</li>
-                    <li>👨👩 Mixed Doubles (2 vs 2, male + female)</li>
-                </ul>
-                
-                <h3>4️⃣ COURT LINES & VALID AREAS</h3>
-                <p>Court markings include:</p>
-                <ul>
-                    <li>Outer sidelines (full width)</li>
-                    <li>Inner sidelines (singles width)</li>
-                    <li>Baseline (back boundary)</li>
-                    <li>Short service line</li>
-                    <li>Long service line (only for doubles serve)</li>
-                    <li>Center line</li>
-                </ul>
-                
-                <h3>👨👩 SINGLES – VALID AREAS</h3>
-                <p><strong>During Rally:</strong></p>
-                <ul>
-                    <li>Width → Inner sidelines</li>
-                    <li>Length → Full court (baseline included)</li>
-                </ul>
-                <p>✅ <strong>Valid:</strong> Inside inner sidelines, Up to baseline</p>
-                <p>❌ <strong>Fault:</strong> Outside inner sidelines, Beyond baseline</p>
-                
-                <h3>👨👨 / 👩👩 / 👨👩 DOUBLES – VALID AREAS</h3>
-                <p><strong>During Rally:</strong></p>
-                <ul>
-                    <li>Width → Outer sidelines (full width)</li>
-                    <li>Length → Full court (baseline included)</li>
-                </ul>
-                <p>✅ <strong>Valid:</strong> Full court</p>
-                <p>❌ <strong>Fault:</strong> Outside outer sidelines, Beyond baseline</p>
-                
-                <h3>5️⃣ SERVICE RULES</h3>
-                <p><strong>General Rules:</strong></p>
-                <ul>
-                    <li>Serve must be diagonal</li>
-                    <li>Shuttle hit below waist</li>
-                    <li>Racket pointing downward</li>
-                    <li>Feet inside service court</li>
-                    <li>Feet stationary</li>
-                </ul>
-                
-                <p><strong>👨👩 Singles – Service Area:</strong></p>
-                <ul>
-                    <li>Width → Inner sidelines</li>
-                    <li>Length → Short service line → Baseline</li>
-                </ul>
-                
-                <p><strong>👨👨 / 👩👩 / 👨👩 Doubles – Service Area:</strong></p>
-                <ul>
-                    <li>Width → Outer sidelines</li>
-                    <li>Length → Short service line → Long service line</li>
-                    <li>👉 Baseline is NOT valid for serve</li>
-                </ul>
-                
-                <h3>6️⃣ SERVING POSITIONS</h3>
-                <p><strong>Singles:</strong></p>
-                <ul>
-                    <li>Even score → serve from right</li>
-                    <li>Odd score → serve from left</li>
-                </ul>
-                
-                <p><strong>Doubles / Mixed:</strong></p>
-                <ul>
-                    <li>Even score → serve from right</li>
-                    <li>Odd score → serve from left</li>
-                </ul>
-                
-                <p><strong>Rotation Rules:</strong></p>
-                <ul>
-                    <li>One serve per side</li>
-                    <li>If serving side wins: Same server continues, Players switch sides</li>
-                    <li>If receiving side wins: They gain serve</li>
-                </ul>
-                
-                <h3>7️⃣ RALLY RULES</h3>
-                <ul>
-                    <li>Shuttle must cross the net</li>
-                    <li>Shuttle landing on line = IN</li>
-                    <li>Rally ends when: Shuttle hits ground, Fault occurs</li>
-                </ul>
-                
-                <h3>8️⃣ FAULTS</h3>
-                <ul>
-                    <li>Shuttle outside valid boundaries</li>
-                    <li>Serve outside correct service area</li>
-                    <li>Shuttle fails to cross net</li>
-                    <li>Shuttle hits obstruction</li>
-                    <li>Player touches net</li>
-                    <li>Double hit / carry</li>
-                    <li>Illegal serve</li>
-                </ul>
-                
-                <h3>9️⃣ LET (REPLAY)</h3>
-                <ul>
-                    <li>Shuttle stuck on net</li>
-                    <li>Receiver not ready</li>
-                    <li>External disturbance</li>
-                </ul>
-                
-                <h3>🔟 INTERVALS</h3>
-                <ul>
-                    <li>60 sec break at 11 points</li>
-                    <li>2 min between games</li>
-                    <li>Change sides: After each game, In 3rd game at 11 points</li>
-                </ul>
+                <!-- Court & Valid Areas Card -->
+                <div class="rule-card" id="court">
+                    <div class="rule-card-header">
+                        <span class="rule-icon">📏</span>
+                        <h2>Court Lines & Valid Areas</h2>
+                    </div>
+                    <div class="rule-card-body">
+                        <div class="court-section">
+                            <h4>Singles Play</h4>
+                            <ul class="rule-list">
+                                <li><span class="list-icon">✓</span> Width: Inner sidelines</li>
+                                <li><span class="list-icon">✓</span> Length: Full court to baseline</li>
+                            </ul>
+                            <div class="valid-fault-grid">
+                                <div class="valid-item">
+                                    <span class="status-icon valid">✅</span>
+                                    <span>Inside inner sidelines</span>
+                                </div>
+                                <div class="fault-item">
+                                    <span class="status-icon fault">❌</span>
+                                    <span>Outside boundaries</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="court-section">
+                            <h4>Doubles Play</h4>
+                            <ul class="rule-list">
+                                <li><span class="list-icon">✓</span> Width: Outer sidelines (full width)</li>
+                                <li><span class="list-icon">✓</span> Length: Full court to baseline</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Service Rules Card -->
+                <div class="rule-card" id="service">
+                    <div class="rule-card-header">
+                        <span class="rule-icon">🏸</span>
+                        <h2>Service Rules</h2>
+                    </div>
+                    <div class="rule-card-body">
+                        <div class="key-rules">
+                            <div class="key-rule-item">
+                                <span class="key-icon">⚡</span>
+                                <strong>Serve must be diagonal</strong>
+                            </div>
+                            <div class="key-rule-item">
+                                <span class="key-icon">⚡</span>
+                                <strong>Hit shuttle below waist</strong>
+                            </div>
+                            <div class="key-rule-item">
+                                <span class="key-icon">⚡</span>
+                                <strong>Racket pointing downward</strong>
+                            </div>
+                        </div>
+                        <div class="service-areas">
+                            <div class="service-type">
+                                <h4>Singles Service</h4>
+                                <ul class="rule-list">
+                                    <li><span class="list-icon">→</span> Inner sidelines</li>
+                                    <li><span class="list-icon">→</span> Short service line to baseline</li>
+                                </ul>
+                            </div>
+                            <div class="service-type">
+                                <h4>Doubles Service</h4>
+                                <ul class="rule-list">
+                                    <li><span class="list-icon">→</span> Outer sidelines</li>
+                                    <li><span class="list-icon">→</span> Short to long service line</li>
+                                    <li><span class="list-icon warning">⚠️</span> Baseline NOT valid</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="serving-positions">
+                            <h4>Serving Positions</h4>
+                            <div class="position-grid">
+                                <div class="position-item">
+                                    <span class="position-badge">Even Score</span>
+                                    <span>Serve from right</span>
+                                </div>
+                                <div class="position-item">
+                                    <span class="position-badge">Odd Score</span>
+                                    <span>Serve from left</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gameplay Rules Card -->
+                <div class="rule-card" id="gameplay">
+                    <div class="rule-card-header">
+                        <span class="rule-icon">⚡</span>
+                        <h2>Gameplay & Faults</h2>
+                    </div>
+                    <div class="rule-card-body">
+                        <div class="gameplay-section">
+                            <h4>Rally Rules</h4>
+                            <ul class="rule-list">
+                                <li><span class="list-icon">✓</span> Shuttle must cross net</li>
+                                <li><span class="list-icon">✓</span> Landing on line = IN</li>
+                                <li><span class="list-icon">✓</span> Rally ends when shuttle hits ground</li>
+                            </ul>
+                        </div>
+                        <div class="gameplay-section">
+                            <h4>Common Faults</h4>
+                            <ul class="rule-list fault-list">
+                                <li><span class="list-icon">❌</span> Shuttle outside boundaries</li>
+                                <li><span class="list-icon">❌</span> Fails to cross net</li>
+                                <li><span class="list-icon">❌</span> Player touches net</li>
+                                <li><span class="list-icon">❌</span> Double hit or carry</li>
+                                <li><span class="list-icon">❌</span> Illegal serve</li>
+                            </ul>
+                        </div>
+                        <div class="gameplay-section">
+                            <h4>Let (Replay)</h4>
+                            <ul class="rule-list">
+                                <li><span class="list-icon">🔄</span> Shuttle stuck on net</li>
+                                <li><span class="list-icon">🔄</span> Receiver not ready</li>
+                                <li><span class="list-icon">🔄</span> External disturbance</li>
+                            </ul>
+                        </div>
+                        <div class="gameplay-section">
+                            <h4>Intervals & Breaks</h4>
+                            <div class="interval-grid">
+                                <div class="interval-item">
+                                    <span class="interval-badge">60 sec</span>
+                                    <span>Break at 11 points</span>
+                                </div>
+                                <div class="interval-item">
+                                    <span class="interval-badge">2 min</span>
+                                    <span>Between games</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <button class="home-button" onclick="showSection('landing')" style="display: block; margin: 40px auto 0;">Back to Home</button>
         </div>
