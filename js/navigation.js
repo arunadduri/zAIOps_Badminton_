@@ -170,32 +170,14 @@ async function updateLiveCounter() {
     try {
         const { data: registrations, error } = await supabaseClient
             .from('registrations')
-            .select('email, created_at')
-            .order('created_at', { ascending: false });
+            .select('email', { count: 'exact' });
         
         if (!error && registrations) {
+            // Count unique players
             const uniquePlayers = new Set(registrations.map(r => r.email)).size;
             const playerCountEl = document.getElementById('playerCount');
             if (playerCountEl) {
                 playerCountEl.textContent = uniquePlayers;
-            }
-
-            const lastEntryEl = document.getElementById('lastEntryStatus');
-            if (lastEntryEl) {
-                if (registrations.length === 0) {
-                    lastEntryEl.textContent = 'First registration coming soon';
-                } else {
-                    const lastEntry = new Date(registrations[0].created_at);
-                    const now = new Date();
-                    const diffMinutes = Math.max(1, Math.floor((now - lastEntry) / 60000));
-
-                    if (diffMinutes < 60) {
-                        lastEntryEl.textContent = `Last entry ${diffMinutes} min${diffMinutes > 1 ? 's' : ''} ago`;
-                    } else {
-                        const diffHours = Math.floor(diffMinutes / 60);
-                        lastEntryEl.textContent = `Last entry ${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
-                    }
-                }
             }
         }
     } catch (error) {
@@ -203,24 +185,29 @@ async function updateLiveCounter() {
     }
 }
 
-function updateNavbarOnScroll() {
-    const navbar = document.querySelector('.main-nav');
-    if (!navbar) return;
-
-    if (window.scrollY > 30) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
+// Countdown timer
+function updateCountdown() {
+    const tournamentDate = new Date('2026-05-01T09:00:00+05:30'); // Adjust date as needed
+    const now = new Date();
+    const diff = tournamentDate - now;
+    
+    if (diff > 0) {
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        
+        const countdownEl = document.getElementById('countdown');
+        if (countdownEl) {
+            countdownEl.textContent = `${days} days ${hours} hours`;
+        }
     }
 }
-
-window.addEventListener('scroll', updateNavbarOnScroll);
 
 // Initialize counters
 window.addEventListener('DOMContentLoaded', () => {
     updateLiveCounter();
-    updateNavbarOnScroll();
-    setInterval(updateLiveCounter, 30000);
+    updateCountdown();
+    setInterval(updateLiveCounter, 30000); // Update every 30 seconds
+    setInterval(updateCountdown, 60000); // Update every minute
 });
 
 // Made with Bob
