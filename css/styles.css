@@ -1753,3 +1753,224 @@ html {
 }
 
 /* Made with Bob */
+
+/* Enhanced Category Header with Stats Dashboard */
+.category-header-enhanced {
+    background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(255, 107, 53, 0.15));
+    backdrop-filter: blur(15px);
+    padding: 25px 35px;
+    border-radius: var(--border-radius);
+    margin-bottom: 30px;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(0, 212, 255, 0.15);
+}
+
+.header-main h3 { 
+    font-family: 'Poppins', sans-serif;
+    color: var(--primary-cyan); 
+    font-size: 28px; 
+    font-weight: 700;
+    margin: 0 0 15px 0;
+}
+
+.header-stats {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+    font-size: 15px;
+    color: var(--text-light);
+}
+
+.stat-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    transition: var(--transition);
+}
+
+.stat-item:hover {
+    background: rgba(0, 212, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.stat-icon {
+    font-size: 18px;
+}
+
+.stat-value {
+    font-weight: 700;
+    color: var(--primary-cyan);
+}
+
+.stat-separator {
+    color: var(--primary-cyan);
+    font-size: 18px;
+    opacity: 0.5;
+}
+
+.stat-warning {
+    background: rgba(255, 107, 53, 0.2);
+    border: 1px solid rgba(255, 107, 53, 0.4);
+}
+
+.stat-warning .stat-value {
+    color: var(--primary-orange);
+}
+
+/* Enhanced Table Styles */
+.registrations-table thead.sticky-header {
+    position: sticky;
+    top: 80px;
+    z-index: 10;
+}
+
+.registrations-table tbody tr.table-row {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.registrations-table tbody tr.table-row:nth-child(even) {
+    background: rgba(26, 41, 66, 0.6);
+}
+
+.registrations-table tbody tr.table-row:hover { 
+    background: rgba(0, 212, 255, 0.18);
+    transform: scale(1.005);
+    box-shadow: 0 6px 25px rgba(0, 212, 255, 0.25);
+    border-left: 3px solid var(--primary-cyan);
+}
+
+/* Rank Column with Badges */
+.col-rank {
+    width: 80px;
+    text-align: center;
+}
+
+.rank-badge {
+    font-size: 24px;
+    margin-right: 8px;
+    display: inline-block;
+}
+
+.rank-number {
+    font-weight: 700;
+    color: var(--primary-cyan);
+    font-size: 16px;
+}
+
+/* Player Info with Enhanced Avatars */
+.player-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.player-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--dark-bg);
+    flex-shrink: 0;
+    transition: var(--transition);
+    position: relative;
+}
+
+/* Avatar Gradient Variations */
+.player-avatar.avatar-0 {
+    background: linear-gradient(135deg, #00d4ff, #667eea);
+    box-shadow: 0 4px 15px rgba(0, 212, 255, 0.4);
+}
+
+.player-avatar.avatar-1 {
+    background: linear-gradient(135deg, #ff6b35, #f093fb);
+    box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
+}
+
+.player-avatar.avatar-2 {
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4);
+}
+
+.player-avatar::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    background: inherit;
+    filter: blur(8px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+}
+
+.table-row:hover .player-avatar::before {
+    opacity: 0.6;
+}
+
+.table-row:hover .player-avatar {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.player-name {
+    font-weight: 600;
+    color: var(--text-light);
+}
+
+/* Email Column */
+.col-email,
+.col-partner-email {
+    color: var(--text-gray);
+    font-size: 14px;
+    opacity: 0.85;
+}
+
+/* Time Display */
+.time-display {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.relative-time {
+    font-weight: 600;
+    color: var(--text-light);
+}
+
+.exact-time {
+    font-size: 12px;
+    color: var(--text-gray);
+    opacity: 0.7;
+}
+
+/* Status Badge */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.status-confirmed {
+    background: rgba(76, 175, 80, 0.2);
+    color: #4caf50;
+    border: 1px solid rgba(76, 175, 80, 0.4);
+}
+
+.status-confirmed:hover {
+    background: rgba(76, 175, 80, 0.3);
+    transform: scale(1.05);
+}
+
+/* Made with Bob - Premium Registration Table Enhancements */

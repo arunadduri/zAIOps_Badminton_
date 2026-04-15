@@ -192,7 +192,7 @@ function getInitials(name) {
         .substring(0, 2);
 }
 
-// Helper function to format relative time
+// Helper function to format relative time with exact time
 function formatRelativeTime(dateString) {
     const date = new Date(dateString);
     const now = new Date();
@@ -201,20 +201,47 @@ function formatRelativeTime(dateString) {
     const diffHours = Math.floor(diffMs / 3600000);
     const diffDays = Math.floor(diffMs / 86400000);
     
+    const exactTime = date.toLocaleDateString('en-IN', {
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+    
+    let relativeTime;
     if (diffMins < 60) {
-        return diffMins <= 1 ? 'Just now' : `${diffMins} mins ago`;
+        relativeTime = diffMins <= 1 ? 'Just now' : `${diffMins} mins ago`;
     } else if (diffHours < 24) {
-        return `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
+        relativeTime = `${diffHours} hour${diffHours > 1 ? 's' : ''} ago`;
     } else if (diffDays < 7) {
-        return `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
+        relativeTime = `${diffDays} day${diffDays > 1 ? 's' : ''} ago`;
     } else {
-        return date.toLocaleDateString('en-IN', {
-            month: 'short',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
-        });
+        return exactTime;
     }
+    
+    return `<div class="time-display"><span class="relative-time">${relativeTime}</span><span class="exact-time">(${exactTime})</span></div>`;
+}
+
+// Helper function to get rank badge
+function getRankBadge(index) {
+    if (index === 0) return '<span class="rank-badge gold">🥇</span>';
+    if (index === 1) return '<span class="rank-badge silver">🥈</span>';
+    if (index === 2) return '<span class="rank-badge bronze">🥉</span>';
+    return '';
+}
+
+// Helper function to get last entry time
+function getLastEntryTime(registrations) {
+    if (!registrations || registrations.length === 0) return 'No entries yet';
+    
+    const latest = registrations[0];
+    const date = new Date(latest.created_at);
+    const now = new Date();
+    const diffHours = Math.floor((now - date) / 3600000);
+    
+    if (diffHours < 1) return 'Just now';
+    if (diffHours < 24) return `${diffHours} hr${diffHours > 1 ? 's' : ''} ago`;
+    return `${Math.floor(diffHours / 24)} day${Math.floor(diffHours / 24) > 1 ? 's' : ''} ago`;
 }
 
 function displayFilteredRegistrations() {
@@ -254,15 +281,34 @@ function displayFilteredRegistrations() {
         const section = document.createElement('div');
         section.className = 'category-section';
         
+        const registrations = groupedByCategory[categoryKey];
+        const count = registrations.length;
+        const lastEntry = getLastEntryTime(registrations);
+        const maxSlots = 16;
+        const slotsLeft = Math.max(0, maxSlots - count);
+        
         const header = document.createElement('div');
-        header.className = 'category-header';
-        const teamCount = categoryKey.includes('Doubles') ?
-            `${groupedByCategory[categoryKey].length} Teams Registered` :
-            `${groupedByCategory[categoryKey].length} Players Registered`;
+        header.className = 'category-header-enhanced';
+        const teamLabel = categoryKey.includes('Doubles') ? 'Teams' : 'Players';
         header.innerHTML = `
-            <div>
+            <div class="header-main">
                 <h3>${categoryMap[categoryKey]}</h3>
-                <div class="team-count">${teamCount}</div>
+                <div class="header-stats">
+                    <span class="stat-item">
+                        <span class="stat-icon">👥</span>
+                        <span class="stat-value">${count}</span> ${teamLabel} Registered
+                    </span>
+                    <span class="stat-separator">•</span>
+                    <span class="stat-item">
+                        <span class="stat-icon">⏱️</span>
+                        Last entry: <span class="stat-value">${lastEntry}</span>
+                    </span>
+                    <span class="stat-separator">•</span>
+                    <span class="stat-item ${slotsLeft <= 3 ? 'stat-warning' : ''}">
+                        <span class="stat-icon">🎯</span>
+                        Slots left: <span class="stat-value">${slotsLeft}</span>
+                    </span>
+                </div>
             </div>
         `;
         section.appendChild(header);
@@ -273,32 +319,43 @@ function displayFilteredRegistrations() {
         const hasPartner = categoryKey.includes('Doubles');
         
         table.innerHTML = `
-            <thead>
+            <thead class="sticky-header">
                 <tr>
-                    <th>#</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    ${hasPartner ? '<th>Partner Name</th><th>Partner Email</th>' : ''}
-                    <th>Registered</th>
+                    <th class="col-rank">#</th>
+                    <th class="col-name">Name</th>
+                    <th class="col-email">Email</th>
+                    ${hasPartner ? '<th class="col-partner">Partner Name</th><th class="col-partner-email">Partner Email</th>' : ''}
+                    <th class="col-time">Registered</th>
+                    <th class="col-status">Status</th>
                 </tr>
             </thead>
             <tbody>
-                ${groupedByCategory[categoryKey].map((reg, index) => `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>
-                            <span class="player-avatar">${getInitials(reg.name)}</span>
-                            ${reg.name}
+                ${registrations.map((reg, index) => `
+                    <tr class="table-row">
+                        <td class="col-rank">
+                            ${getRankBadge(index)}
+                            <span class="rank-number">${index + 1}</span>
                         </td>
-                        <td>${reg.email}</td>
+                        <td class="col-name">
+                            <div class="player-info">
+                                <span class="player-avatar avatar-${index % 3}">${getInitials(reg.name)}</span>
+                                <span class="player-name">${reg.name}</span>
+                            </div>
+                        </td>
+                        <td class="col-email">${reg.email}</td>
                         ${hasPartner ? `
-                            <td>
-                                <span class="player-avatar">${getInitials(reg.partner_name || 'NA')}</span>
-                                ${reg.partner_name || '-'}
+                            <td class="col-partner">
+                                <div class="player-info">
+                                    <span class="player-avatar avatar-${(index + 1) % 3}">${getInitials(reg.partner_name || 'NA')}</span>
+                                    <span class="player-name">${reg.partner_name || '-'}</span>
+                                </div>
                             </td>
-                            <td>${reg.partner_email || '-'}</td>
+                            <td class="col-partner-email">${reg.partner_email || '-'}</td>
                         ` : ''}
-                        <td>${formatRelativeTime(reg.created_at)}</td>
+                        <td class="col-time">${formatRelativeTime(reg.created_at)}</td>
+                        <td class="col-status">
+                            <span class="status-badge status-confirmed">✓ Confirmed</span>
+                        </td>
                     </tr>
                 `).join('')}
             </tbody>
