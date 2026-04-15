@@ -147,20 +147,25 @@ html {
 /* Enhanced Main Navigation Bar with Glassmorphism */
 .main-nav {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 80px;
-    background: rgba(10, 22, 40, 0.85);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    top: 8px;
+    left: 32px;
+    right: 32px;
+    height: 112px;
+    background:
+        radial-gradient(circle at center, rgba(255, 255, 255, 0.14), transparent 24%),
+        linear-gradient(90deg, rgba(19, 88, 112, 0.9) 0%, rgba(6, 19, 67, 0.96) 38%, rgba(3, 22, 61, 0.98) 68%, rgba(53, 42, 74, 0.9) 100%);
+    backdrop-filter: blur(22px) saturate(180%);
+    -webkit-backdrop-filter: blur(22px) saturate(180%);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0 60px;
+    padding: 0 44px;
     z-index: 1002;
-    box-shadow: 0 4px 30px rgba(0, 212, 255, 0.15);
-    border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+    box-shadow:
+        0 16px 40px rgba(3, 16, 43, 0.32),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(122, 184, 214, 0.18);
+    border-radius: 28px;
     transition: var(--transition);
     animation: slideDown 0.6s ease-out;
 }
@@ -179,46 +184,68 @@ html {
 .nav-logo {
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: 56px;
-    height: 56px;
+    gap: 22px;
     flex-shrink: 0;
     cursor: pointer;
     transition: var(--transition);
 }
 
 .nav-logo:hover {
-    transform: scale(1.05);
+    transform: scale(1.02);
 }
 
 .nav-logo-img {
-    width: 100%;
-    height: 100%;
+    width: 78px;
+    height: 78px;
     aspect-ratio: 1 / 1;
     object-fit: contain;
     display: block;
-    filter: drop-shadow(0 2px 8px rgba(0, 212, 255, 0.4));
+    filter: drop-shadow(0 8px 20px rgba(0, 212, 255, 0.22));
     transition: all 0.3s ease;
 }
 
+.nav-brand-copy {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.nav-brand-title {
+    font-family: 'Inter', sans-serif;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1;
+    color: #ffffff;
+}
+
+.nav-brand-subtitle {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.72);
+}
+
 .nav-logo-img:hover {
-    filter: drop-shadow(0 2px 12px rgba(0, 212, 255, 0.6));
+    filter: drop-shadow(0 10px 26px rgba(0, 212, 255, 0.3));
 }
 
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 40px;
+    gap: 56px;
     list-style: none;
 }
 
 .nav-links li a {
     font-family: 'Inter', sans-serif;
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--text-light);
+    font-size: 19px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.96);
     text-decoration: none;
-    padding: 8px 16px;
+    padding: 10px 0;
     border-radius: 8px;
     transition: var(--transition);
     position: relative;
@@ -246,12 +273,12 @@ html {
 }
 
 .nav-links li a.nav-cta {
-    background: linear-gradient(135deg, var(--primary-cyan), var(--primary-orange));
-    color: var(--dark-bg);
-    padding: 12px 28px;
-    border-radius: 25px;
-    font-weight: 600;
-    box-shadow: 0 4px 15px rgba(0, 212, 255, 0.3);
+    background: linear-gradient(135deg, #2fd4ff, #ff9a33);
+    color: #041625;
+    padding: 18px 34px;
+    border-radius: 32px;
+    font-weight: 800;
+    box-shadow: 0 12px 28px rgba(0, 212, 255, 0.24);
 }
 
 .nav-links li a.nav-cta::after {
@@ -259,9 +286,9 @@ html {
 }
 
 .nav-links li a.nav-cta:hover {
-    transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 6px 25px rgba(0, 212, 255, 0.5);
-    background: linear-gradient(135deg, var(--primary-orange), var(--primary-cyan));
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 16px 32px rgba(0, 212, 255, 0.3);
+    background: linear-gradient(135deg, #38dcff, #ffa847);
 }
 
 .mobile-menu-toggle {
