@@ -278,19 +278,7 @@ html {
 
 /* Top Navigation Bar (Search bar) */
 .top-nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 70px;
-    background: linear-gradient(180deg, rgba(10, 22, 40, 0.95) 0%, rgba(26, 41, 66, 0.95) 100%);
-    backdrop-filter: blur(10px);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 30px;
-    z-index: 1001;
-    box-shadow: 0 2px 20px rgba(0, 212, 255, 0.1);
+    display: none;
 }
 
 .top-search {
