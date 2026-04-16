@@ -31,14 +31,6 @@ async function loadAllRegistrations() {
     }
 }
 
-// Local gallery image list
-const fallbackImages = [
-    'IMG_4687.jpg',
-    'IMG_4101.jpg',
-    'IMG_4105.jpg',
-    '81c7b00f-a8b0-4782-af30-a54fdfe053e2.jpg'
-];
-
 // Gallery lightbox state
 let galleryImages = [];
 let currentLightboxIndex = 0;
@@ -49,23 +41,54 @@ let lightboxIsDragging = false;
 let lightboxStartX = 0;
 let lightboxStartY = 0;
 
-// Load gallery images from local Photos directory
-function loadGalleryImages() {
+// Load gallery images from JSON configuration file
+async function loadGalleryImages() {
+    const galleryGrid = document.querySelector('#earlierGallery .gallery-grid');
+    
+    if (!galleryGrid) return;
+    
+    galleryGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-gray);"><div class="spinner"></div><p>Loading gallery...</p></div>';
+    
+    try {
+        // Load image list from JSON file
+        const response = await fetch('Photos/images.json');
+        const imageFiles = await response.json();
+        
+        if (!imageFiles || imageFiles.length === 0) {
+            throw new Error('No images in configuration');
+        }
+        
+        galleryImages = imageFiles.map(fileName => `Photos/${fileName}`);
+        displayGalleryImages(imageFiles);
+        
+    } catch (error) {
+        console.error('Error loading gallery images:', error);
+        // Fallback: Use a predefined list if JSON loading fails
+        const fallbackImages = [
+            'IMG_4687.jpg',
+            'IMG_4101.jpg',
+            'IMG_4105.jpg',
+            '81c7b00f-a8b0-4782-af30-a54fdfe053e2.jpg'
+        ];
+        
+        galleryImages = fallbackImages.map(fileName => `Photos/${fileName}`);
+        displayGalleryImages(fallbackImages);
+    }
+}
+
+function displayGalleryImages(imageFiles) {
     const galleryGrid = document.querySelector('#earlierGallery .gallery-grid');
     
     if (!galleryGrid) return;
     
     galleryGrid.innerHTML = '';
     
-    if (fallbackImages.length === 0) {
+    if (imageFiles.length === 0) {
         galleryGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-gray);">No images found</div>';
-        galleryImages = [];
         return;
     }
-
-    galleryImages = fallbackImages.map(fileName => `Photos/${fileName}`);
     
-    fallbackImages.forEach((fileName, index) => {
+    imageFiles.forEach((fileName, index) => {
         const galleryItem = document.createElement('div');
         galleryItem.className = 'gallery-item';
         galleryItem.setAttribute('onclick', `openLightbox(${index})`);
