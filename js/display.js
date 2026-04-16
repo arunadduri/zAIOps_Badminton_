@@ -53,6 +53,8 @@ async function loadGalleryImages() {
     galleryGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-gray);"><div class="spinner"></div><p>Loading gallery...</p></div>';
     
     try {
+        console.log('Attempting to load images from Supabase Storage bucket:', STORAGE_BUCKET);
+        
         // Fetch list of files from Supabase Storage bucket
         const { data: files, error } = await supabaseClient
             .storage
@@ -63,9 +65,15 @@ async function loadGalleryImages() {
                 sortBy: { column: 'name', order: 'asc' }
             });
         
-        if (error) throw error;
+        if (error) {
+            console.error('Supabase Storage error:', error);
+            throw error;
+        }
+        
+        console.log('Files found in Supabase Storage:', files);
         
         if (!files || files.length === 0) {
+            console.warn('No images found in Supabase Storage bucket');
             throw new Error('No images found in storage');
         }
         
@@ -92,6 +100,7 @@ async function loadGalleryImages() {
         
     } catch (error) {
         console.error('Error loading gallery from Supabase:', error);
+        console.log('Falling back to local Photos folder...');
         
         // Fallback: Try loading from local Photos folder
         try {
@@ -101,7 +110,8 @@ async function loadGalleryImages() {
             if (imageFiles && imageFiles.length > 0) {
                 galleryImages = imageFiles.map(fileName => `Photos/${fileName}`);
                 displayGalleryImages(imageFiles.map(name => ({ name })), galleryImages);
-                console.log('Loaded images from local fallback');
+                console.log('✅ Loaded images from local fallback (Photos folder)');
+                console.log('ℹ️ To use Supabase Storage, complete the setup in SUPABASE_STORAGE_SETUP.md');
                 return;
             }
         } catch (fallbackError) {
@@ -112,7 +122,7 @@ async function loadGalleryImages() {
         galleryGrid.innerHTML = `
             <div style="text-align: center; padding: 40px; color: var(--text-gray);">
                 <p>Unable to load gallery images.</p>
-                <p style="font-size: 14px; margin-top: 10px;">Please check Supabase Storage setup.</p>
+                <p style="font-size: 14px; margin-top: 10px;">Please check Supabase Storage setup or ensure Photos/images.json exists.</p>
             </div>
         `;
     }
