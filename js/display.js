@@ -67,10 +67,12 @@ async function loadGalleryImages() {
         
         if (error) {
             console.error('Supabase Storage error:', error);
+            console.error('Error details:', JSON.stringify(error));
             throw error;
         }
         
         console.log('Files found in Supabase Storage:', files);
+        console.log('Number of files:', files ? files.length : 0);
         
         if (!files || files.length === 0) {
             console.warn('No images found in Supabase Storage bucket');
