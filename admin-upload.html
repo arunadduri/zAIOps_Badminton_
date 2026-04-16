@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gallery Admin - Upload Images</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        .admin-container {
+            max-width: 800px;
+            margin: 100px auto;
+            padding: 40px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .admin-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .admin-header h1 {
+            font-size: 36px;
+            background: linear-gradient(90deg, var(--primary-cyan), var(--primary-orange));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        
+        .upload-area {
+            border: 3px dashed rgba(0, 212, 255, 0.3);
+            border-radius: 12px;
+            padding: 60px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+        }
+        
+        .upload-area:hover {
+            border-color: var(--primary-cyan);
+            background: rgba(0, 212, 255, 0.05);
+        }
+        
+        .upload-area.dragover {
+            border-color: var(--primary-orange);
+            background: rgba(255, 107, 53, 0.1);
+        }
+        
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        .file-input {
+            display: none;
+        }
+        
+        .upload-btn {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, var(--primary-cyan), var(--primary-orange));
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .upload-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .upload-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .preview-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            aspect-ratio: 1;
+        }
+        
+        .preview-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .preview-item .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: rgba(255, 68, 68, 0.9);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            font-size: 18px;
+            line-height: 1;
+        }
+        
+        .status-message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .status-message.success {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid rgba(0, 255, 0, 0.3);
+            color: #00ff00;
+        }
+        
+        .status-message.error {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            color: #ff4444;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            color: var(--primary-cyan);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>🖼️ Gallery Admin</h1>
+            <p style="color: var(--text-gray);">Upload tournament photos to Supabase Storage</p>
+        </div>
+        
+        <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">📸</div>
+            <h3>Drag & Drop Images Here</h3>
+            <p style="color: var(--text-gray); margin: 10px 0;">or</p>
+            <button class="upload-btn" onclick="document.getElementById('fileInput').click()">
+                Choose Files
+            </button>
+            <input type="file" id="fileInput" class="file-input" multiple accept="image/*">
+            <p style="color: var(--text-gray); margin-top: 20px; font-size: 14px;">
+                Supports: JPG, PNG, GIF, WebP
+            </p>
+        </div>
+        
+        <div id="previewContainer" class="preview-grid"></div>
+        
+        <button id="uploadAllBtn" class="upload-btn" style="width: 100%; margin-top: 20px; display: none;">
+            Upload All Images
+        </button>
+        
+        <div id="statusMessage"></div>
+        
+        <a href="index.html" class="back-link">← Back to Gallery</a>
+    </div>
+    
+    <script src="js/config.js"></script>
+    <script>
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const previewContainer = document.getElementById('previewContainer');
+        const uploadAllBtn = document.getElementById('uploadAllBtn');
+        const statusMessage = document.getElementById('statusMessage');
+        
+        let selectedFiles = [];
+        
+        // Drag and drop handlers
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+        
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+        
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            handleFiles(e.dataTransfer.files);
+        });
+        
+        fileInput.addEventListener('change', (e) => {
+            handleFiles(e.target.files);
+        });
+        
+        function handleFiles(files) {
+            selectedFiles = Array.from(files).filter(file => file.type.startsWith('image/'));
+            displayPreviews();
+        }
+        
+        function displayPreviews() {
+            previewContainer.innerHTML = '';
+            
+            if (selectedFiles.length === 0) {
+                uploadAllBtn.style.display = 'none';
+                return;
+            }
+            
+            uploadAllBtn.style.display = 'block';
+            
+            selectedFiles.forEach((file, index) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'preview-item';
+                    previewItem.innerHTML = `
+                        <img src="${e.target.result}" alt="${file.name}">
+                        <button class="remove-btn" onclick="removeFile(${index})">×</button>
+                    `;
+                    previewContainer.appendChild(previewItem);
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+        
+        function removeFile(index) {
+            selectedFiles.splice(index, 1);
+            displayPreviews();
+        }
+        
+        uploadAllBtn.addEventListener('click', async () => {
+            if (selectedFiles.length === 0) return;
+            
+            uploadAllBtn.disabled = true;
+            uploadAllBtn.textContent = 'Uploading...';
+            statusMessage.innerHTML = '';
+            
+            try {
+                let successCount = 0;
+                let errorCount = 0;
+                
+                for (const file of selectedFiles) {
+                    try {
+                        const { data, error } = await supabaseClient
+                            .storage
+                            .from('gallery-images')
+                            .upload(file.name, file, {
+                                cacheControl: '3600',
+                                upsert: true
+                            });
+                        
+                        if (error) throw error;
+                        successCount++;
+                    } catch (error) {
+                        console.error('Error uploading', file.name, error);
+                        errorCount++;
+                    }
+                }
+                
+                statusMessage.className = 'status-message success';
+                statusMessage.innerHTML = `
+                    ✅ Successfully uploaded ${successCount} image(s)!
+                    ${errorCount > 0 ? `<br>⚠️ Failed to upload ${errorCount} image(s)` : ''}
+                    <br><br>Images will appear in the gallery immediately.
+                `;
+                
+                selectedFiles = [];
+                displayPreviews();
+                fileInput.value = '';
+                
+            } catch (error) {
+                statusMessage.className = 'status-message error';
+                statusMessage.textContent = '❌ Upload failed: ' + error.message;
+            } finally {
+                uploadAllBtn.disabled = false;
+                uploadAllBtn.textContent = 'Upload All Images';
+            }
+        });
+    </script>
+</body>
+</html>

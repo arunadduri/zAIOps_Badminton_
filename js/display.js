@@ -41,7 +41,10 @@ let lightboxIsDragging = false;
 let lightboxStartX = 0;
 let lightboxStartY = 0;
 
-// Load gallery images from JSON configuration file
+// Supabase Storage configuration
+const STORAGE_BUCKET = 'gallery-images';
+
+// Load gallery images from Supabase Storage
 async function loadGalleryImages() {
     const galleryGrid = document.querySelector('#earlierGallery .gallery-grid');
     
@@ -50,33 +53,72 @@ async function loadGalleryImages() {
     galleryGrid.innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-gray);"><div class="spinner"></div><p>Loading gallery...</p></div>';
     
     try {
-        // Load image list from JSON file
-        const response = await fetch('Photos/images.json');
-        const imageFiles = await response.json();
+        // Fetch list of files from Supabase Storage bucket
+        const { data: files, error } = await supabaseClient
+            .storage
+            .from(STORAGE_BUCKET)
+            .list('', {
+                limit: 100,
+                offset: 0,
+                sortBy: { column: 'name', order: 'asc' }
+            });
         
-        if (!imageFiles || imageFiles.length === 0) {
-            throw new Error('No images in configuration');
+        if (error) throw error;
+        
+        if (!files || files.length === 0) {
+            throw new Error('No images found in storage');
         }
         
-        galleryImages = imageFiles.map(fileName => `Photos/${fileName}`);
-        displayGalleryImages(imageFiles);
+        // Filter for image files only
+        const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp'];
+        const imageFiles = files.filter(file =>
+            imageExtensions.some(ext => file.name.toLowerCase().endsWith(ext))
+        );
+        
+        if (imageFiles.length === 0) {
+            throw new Error('No image files found');
+        }
+        
+        // Get public URLs for all images
+        galleryImages = imageFiles.map(file => {
+            const { data } = supabaseClient
+                .storage
+                .from(STORAGE_BUCKET)
+                .getPublicUrl(file.name);
+            return data.publicUrl;
+        });
+        
+        displayGalleryImages(imageFiles, galleryImages);
         
     } catch (error) {
-        console.error('Error loading gallery images:', error);
-        // Fallback: Use a predefined list if JSON loading fails
-        const fallbackImages = [
-            'IMG_4687.jpg',
-            'IMG_4101.jpg',
-            'IMG_4105.jpg',
-            '81c7b00f-a8b0-4782-af30-a54fdfe053e2.jpg'
-        ];
+        console.error('Error loading gallery from Supabase:', error);
         
-        galleryImages = fallbackImages.map(fileName => `Photos/${fileName}`);
-        displayGalleryImages(fallbackImages);
+        // Fallback: Try loading from local Photos folder
+        try {
+            const response = await fetch('Photos/images.json');
+            const imageFiles = await response.json();
+            
+            if (imageFiles && imageFiles.length > 0) {
+                galleryImages = imageFiles.map(fileName => `Photos/${fileName}`);
+                displayGalleryImages(imageFiles.map(name => ({ name })), galleryImages);
+                console.log('Loaded images from local fallback');
+                return;
+            }
+        } catch (fallbackError) {
+            console.error('Fallback also failed:', fallbackError);
+        }
+        
+        // Final fallback: Show error message
+        galleryGrid.innerHTML = `
+            <div style="text-align: center; padding: 40px; color: var(--text-gray);">
+                <p>Unable to load gallery images.</p>
+                <p style="font-size: 14px; margin-top: 10px;">Please check Supabase Storage setup.</p>
+            </div>
+        `;
     }
 }
 
-function displayGalleryImages(imageFiles) {
+function displayGalleryImages(imageFiles, imageUrls) {
     const galleryGrid = document.querySelector('#earlierGallery .gallery-grid');
     
     if (!galleryGrid) return;
@@ -88,13 +130,14 @@ function displayGalleryImages(imageFiles) {
         return;
     }
     
-    imageFiles.forEach((fileName, index) => {
+    imageFiles.forEach((file, index) => {
         const galleryItem = document.createElement('div');
         galleryItem.className = 'gallery-item';
         galleryItem.setAttribute('onclick', `openLightbox(${index})`);
 
         const imageElement = document.createElement('img');
-        imageElement.src = `Photos/${fileName}`;
+        // Use the full URL from imageUrls array, or construct from file name for fallback
+        imageElement.src = imageUrls ? imageUrls[index] : `Photos/${file.name || file}`;
         imageElement.alt = `Tournament Photo ${index + 1}`;
         imageElement.loading = 'lazy';
         imageElement.dataset.index = String(index);
@@ -102,6 +145,7 @@ function displayGalleryImages(imageFiles) {
         imageElement.setAttribute('onclick', `openLightbox(${index})`);
 
         imageElement.onerror = function() {
+            console.error('Failed to load image:', this.src);
             this.parentElement.style.display = 'none';
         };
 
