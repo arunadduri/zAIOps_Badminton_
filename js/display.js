@@ -55,7 +55,7 @@ async function loadGalleryImages() {
     try {
         console.log('Attempting to load images from Supabase Storage bucket:', STORAGE_BUCKET);
         
-        // Fetch list of files from Supabase Storage bucket
+        // Fetch list of files from Supabase Storage bucket (root level)
         const { data: files, error } = await supabaseClient
             .storage
             .from(STORAGE_BUCKET)
@@ -71,17 +71,49 @@ async function loadGalleryImages() {
             throw error;
         }
         
-        console.log('Files found in Supabase Storage:', files);
+        console.log('Files found in Supabase Storage (root):', files);
         console.log('Number of files:', files ? files.length : 0);
         
-        if (!files || files.length === 0) {
-            console.warn('No images found in Supabase Storage bucket');
+        // Check if files are in subfolders
+        let allFiles = [];
+        if (files && files.length > 0) {
+            for (const item of files) {
+                if (item.id === null) {
+                    // This is a folder, list its contents
+                    console.log('Found folder:', item.name);
+                    const { data: folderFiles } = await supabaseClient
+                        .storage
+                        .from(STORAGE_BUCKET)
+                        .list(item.name, {
+                            limit: 100,
+                            sortBy: { column: 'name', order: 'asc' }
+                        });
+                    if (folderFiles) {
+                        // Add folder path to each file
+                        folderFiles.forEach(f => {
+                            if (f.id !== null) { // Skip subfolders
+                                f.fullPath = `${item.name}/${f.name}`;
+                                allFiles.push(f);
+                            }
+                        });
+                    }
+                } else {
+                    // This is a file at root level
+                    item.fullPath = item.name;
+                    allFiles.push(item);
+                }
+            }
+        }
+        
+        console.log('Total files found (including subfolders):', allFiles.length);
+        
+        if (allFiles.length === 0) {
             throw new Error('No images found in storage');
         }
         
         // Filter for image files only
         const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.bmp'];
-        const imageFiles = files.filter(file =>
+        const imageFiles = allFiles.filter(file =>
             imageExtensions.some(ext => file.name.toLowerCase().endsWith(ext))
         );
         
@@ -89,12 +121,13 @@ async function loadGalleryImages() {
             throw new Error('No image files found');
         }
         
-        // Get public URLs for all images
+        // Get public URLs for all images (use fullPath for files in subfolders)
         galleryImages = imageFiles.map(file => {
+            const filePath = file.fullPath || file.name;
             const { data } = supabaseClient
                 .storage
                 .from(STORAGE_BUCKET)
-                .getPublicUrl(file.name);
+                .getPublicUrl(filePath);
             return data.publicUrl;
         });
         
