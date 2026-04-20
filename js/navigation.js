@@ -199,11 +199,11 @@ async function updateLiveCounter() {
             .select('email', { count: 'exact' });
         
         if (!error && registrations) {
-            // Count unique players
-            const uniquePlayers = new Set(registrations.map(r => r.email)).size;
+            // Count total registrations (sum of all category registrations)
+            const totalRegistrations = registrations.length;
             const playerCountEl = document.getElementById('playerCount');
             if (playerCountEl) {
-                playerCountEl.textContent = uniquePlayers;
+                playerCountEl.textContent = totalRegistrations;
             }
         }
     } catch (error) {
