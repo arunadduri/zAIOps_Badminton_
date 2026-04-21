@@ -194,13 +194,25 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('submitBtn').disabled = true;
         
         try {
-            // Check existing registrations
+            // Get all partner emails we're trying to register with
+            const partnerEmails = selectedCategories
+                .filter(cb => cb.dataset.hasPartner === 'true')
+                .map(cb => document.getElementById(`${cb.value}PartnerEmail`)?.value.trim().toLowerCase())
+                .filter(e => e);
+            
+            // Build query to check current user AND all partners
+            const emailsToCheck = [email.toLowerCase(), ...partnerEmails];
+            const orConditions = emailsToCheck.map(e => `email.eq.${e},partner_email.eq.${e}`).join(',');
+            
+            // Check existing registrations for current user and all partners
             const { data: existingRegistrations, error: checkError } = await supabaseClient
                 .from('registrations')
-                .select('category, email, partner_email, gender')
-                .or(`email.eq.${email.toLowerCase()},partner_email.eq.${email.toLowerCase()}`);
+                .select('category, email, partner_email, gender, name, partner_name')
+                .or(orConditions);
             
             if (checkError) throw checkError;
+            
+            console.log('Existing registrations found:', existingRegistrations);
             
             // Gender validation
             const userRegistrations = existingRegistrations?.filter(reg => reg.email === email.toLowerCase()) || [];
