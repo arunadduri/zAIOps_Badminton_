@@ -237,16 +237,43 @@ document.addEventListener('DOMContentLoaded', function() {
                     ? document.getElementById(`${category}PartnerEmail`).value.trim().toLowerCase() 
                     : null;
                 
-                // Check for reverse partner registration
+                // Check for partner-related conflicts
                 if (partnerEmail) {
+                    // Check if partner has already registered you
                     const reverseExists = existingRegistrations?.some(reg =>
-                        reg.category === category && 
-                        reg.email === partnerEmail && 
+                        reg.category === category &&
+                        reg.email === partnerEmail &&
                         reg.partner_email === email.toLowerCase()
                     );
                     
                     if (reverseExists) {
                         showError(`Your partner has already registered you for ${categoryLabel}.`);
+                        continue;
+                    }
+                    
+                    // Check if current user is already registered in this category with someone else
+                    const userAlreadyInCategory = existingRegistrations?.some(reg =>
+                        reg.category === category &&
+                        reg.email === email.toLowerCase() &&
+                        reg.partner_email !== partnerEmail
+                    );
+                    
+                    if (userAlreadyInCategory) {
+                        showError(`You are already registered for ${categoryLabel} with a different partner.`);
+                        continue;
+                    }
+                    
+                    // Check if partner is already registered in this category with someone else
+                    const partnerAlreadyInCategory = existingRegistrations?.some(reg =>
+                        reg.category === category &&
+                        (reg.email === partnerEmail || reg.partner_email === partnerEmail) &&
+                        reg.email !== email.toLowerCase() &&
+                        reg.partner_email !== email.toLowerCase()
+                    );
+                    
+                    if (partnerAlreadyInCategory) {
+                        const partnerName = document.getElementById(`${category}PartnerName`).value.trim();
+                        showError(`${partnerName} is already registered for ${categoryLabel} with another partner.`);
                         continue;
                     }
                 }
