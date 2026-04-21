@@ -264,12 +264,21 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                     
                     // Check if partner is already registered in this category with someone else
-                    const partnerAlreadyInCategory = existingRegistrations?.some(reg =>
-                        reg.category === category &&
-                        (reg.email === partnerEmail || reg.partner_email === partnerEmail) &&
-                        reg.email !== email.toLowerCase() &&
-                        reg.partner_email !== email.toLowerCase()
-                    );
+                    const partnerAlreadyInCategory = existingRegistrations?.some(reg => {
+                        if (reg.category !== category) return false;
+                        
+                        // Check if partner is the primary registrant with a different partner
+                        if (reg.email === partnerEmail && reg.partner_email !== email.toLowerCase()) {
+                            return true;
+                        }
+                        
+                        // Check if partner is listed as someone else's partner
+                        if (reg.partner_email === partnerEmail && reg.email !== email.toLowerCase()) {
+                            return true;
+                        }
+                        
+                        return false;
+                    });
                     
                     if (partnerAlreadyInCategory) {
                         const partnerName = document.getElementById(`${category}PartnerName`).value.trim();
